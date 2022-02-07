@@ -1,0 +1,25 @@
+type: object
+description: A milestone object
+properties:
+  id: 
+    type: integer
+    description: the milestone id
+    example: 2
+  goal_id:
+    $ref: ./goal_id.yaml
+  end_date:
+    $ref: ./end_date.yaml
+  target:
+    type: number
+    description: |
+      Expected milestone of the goal
+    example: 33.3
+  label:
+    type: string
+    maxLength: 25
+    description: Mileston label in UI
+    example: Week 5
+  created_at:
+    $ref: ./created_at.yaml
+  updated_at:
+    $ref: ./updated_at.yaml

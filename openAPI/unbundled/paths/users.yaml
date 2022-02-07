@@ -1,0 +1,97 @@
+get:
+  tags:
+    - Users
+  summary: List users
+  description: >-
+    Fetch some or all users, using filters to fetch subsets.
+
+    In addition to `limit` and `offset`, you can also pass any field in the
+    `user` object as a query parameter.
+  operationId: list-users
+  parameters:
+    - $ref: ../components/parameters/limit.yaml
+    - $ref: ../components/parameters/offset.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                items:
+                  $ref: ../components/schemas/user.yaml
+              meta:
+                $ref: ../components/schemas/meta.yaml
+
+
+post:
+  tags:
+    - Users
+  summary: Create a user
+  operationId: create-user
+  description: >-
+    Create a user, with name and login credentials. You can optionally add your
+    own `client_id`, and a `password` for first time logins.
+
+    A successul request returns the new user's Cascade `id`, along with other
+    user data.
+  parameters:
+    - $ref: ../components/parameters/offset.yaml
+    - $ref: ../components/parameters/limit.yaml
+    - $ref: ../components/parameters/first_name.yaml
+    - $ref: ../components/parameters/last_name.yaml
+    - $ref: ../components/parameters/role_id.yaml
+    - $ref: ../components/parameters/username.yaml
+    - $ref: ../components/parameters/email.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/userCreate.yaml
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            example:
+              user:
+                id: '25'
+                client_id: U938168735
+                username: robertsonr21
+                is_enabled: 1
+                is_locked: 0
+                is_notified: 0
+                is_restricted: 0
+                is_archived: 0
+                first_name: Rob
+                last_name: Allen
+                email: hello@example.com
+                creation_time: '2021-12-09T23:28:32+00:00'
+                last_login_ip: null
+                last_login_time: null
+                role_id: null
+                current_appointment_id: null
+                invitation_id: null
+                appointment_ids: []
+                appraisal_ids: []
+                meeting_ids: []
+                survey_campaign_ids: []
+                survey_ids: []
+                competency_assessment_ids: []
+                dashboard_ids: []
+                dashboard_configuration_ids: []
+                links:
+                  events: /api/v2/users/25/events
+                  user_configs: /api/v2/users/25/user_configs
+                  scheduled_jobs: /api/v2/users/25/scheduled_jobs
+                  snapshots: /api/v2/users/25/snapshots
+                  job_applications: /api/v2/users/25/job_applications
+                  statistic: /api/v2/users/25/statistic
+    '404':
+      $ref: ../components/responses/404.yaml
+    '422':
+      $ref: ../components/responses/422.yaml

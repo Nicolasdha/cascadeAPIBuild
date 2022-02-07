@@ -1,0 +1,29 @@
+type: object
+description: An `entity_template` object
+properties:
+  id:
+    $ref: ./id.yaml
+  name:
+    description: Name of this entity_template
+    type: string
+    example: Example name
+  description:
+    description: A description of the template
+    type: string
+    example: A dropdown
+  settings:
+    $ref: ./settings.yaml
+  entity_type:
+    $ref: ./entity_type.yaml
+  is_enabled:
+    $ref: ./is_enabled.yaml
+  is_archived:
+    $ref: ./is_archived.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  updated_at:
+    $ref: ./updated_at.yaml
+  modified_by_id:
+    $ref: ./modified_by_id.yaml
+  entity_template_attributes:
+    $ref: ./entity_template_attributes.yaml

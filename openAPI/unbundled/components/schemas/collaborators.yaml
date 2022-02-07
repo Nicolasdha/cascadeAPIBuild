@@ -1,0 +1,10 @@
+type: array
+items:
+  type: object
+  properties:
+    id:
+      $ref: ./id.yaml
+    goal_id:
+      $ref: ./goal_id.yaml
+    role_id:
+      $ref: ./role_id.yaml

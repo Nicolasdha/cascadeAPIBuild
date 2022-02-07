@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Roles
+  summary: List roles
+  operationId: list-roles
+  description: 'Fetch some or all role records, using filters to fetch subsets.'
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/roleObject.yaml
+post:
+  tags:
+    - Roles
+  summary: Create a role
+  operationId: create-role
+  description: |-
+    Add a new role..
+    Request body MUST include the fields `task` and `goal_id`.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            role:
+              $ref: ../components/schemas/roleCreate.yaml
+  responses:
+    '201':
+      $ref: ../components/responses/201.yaml
+    '422':
+      $ref: ../components/responses/422.yaml
+           

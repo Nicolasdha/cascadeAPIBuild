@@ -1,0 +1,12 @@
+type: string
+description: |
+  Tracking schema used to track the goal
+enum:
+  - MANUAL
+  - SUBGOAL-SUM
+  - SUBGOAL-MEAN
+  - WEIGHTED-MEAN
+  - TASKS
+default: MANUAL
+example: MANUAL
+nullable: false

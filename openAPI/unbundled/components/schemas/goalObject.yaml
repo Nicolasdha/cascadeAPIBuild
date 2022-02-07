@@ -1,0 +1,89 @@
+description: A goal object
+type: object
+properties:
+  id:
+    $ref: ./id.yaml
+  role_id:
+    $ref: ./role_id.yaml
+  creator_id:
+    $ref: ./creator_id.yaml
+  status:
+    $ref: ./status.yaml
+  completion_criteria:
+    $ref: ./completion_criteria.yaml
+  target_flow:
+    $ref: ./target_flow.yaml
+  action:
+    $ref: ./action.yaml
+  details:
+    $ref: ./details.yaml
+  initial:
+    $ref: ./initial.yaml
+  threshold:
+    $ref: ./threshold.yaml
+  progress:
+    $ref: ./progress.yaml
+  target:
+    $ref: ./target.yaml
+  allocated_time:
+    $ref: ./allocated_time.yaml
+  unit_id:
+    $ref: ./unit_id.yaml
+  start_time:
+    $ref: ./start_time.yaml
+  end_time:
+    $ref: ./end_time.yaml
+  weight_id:
+    $ref: ./weight_id.yaml
+  link:
+    $ref: ./why_type.yaml
+  why_type:
+    $ref: ./why_type.yaml
+  why:
+    $ref: ./why.yaml
+  is_private:
+    $ref: ./is_private.yaml
+  tracking_type:
+    $ref: ./tracking_type.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  updated_at:
+    $ref: ./created_at.yaml
+  image:
+    $ref: ./image.yaml
+  custom_attributes:
+    $ref: ./customAttributes.yaml
+  entity_template_id:
+    $ref: ./entity_template_id.yaml
+  settings:
+    $ref: ./settings.yaml
+  title:
+    $ref: ./title.yaml
+  pending_edit_id:
+    $ref: ./pending_edit_id.yaml
+  pending_delete_id:
+    $ref: ./pending_delete_id.yaml
+  pending_completion_id:
+    $ref: ./pending_completion_id.yaml
+  direct_focus_area_ids:
+    $ref: ./direct_focus_area_ids.yaml
+  inherited_focus_area_ids:
+    $ref: ./inherited_focus_area_ids.yaml
+  aligned_from_ids:
+    $ref: ./aligned_from_ids.yaml
+  aligned_to_ids:
+    $ref: ./aligned_to_ids.yaml
+  ancestor_ids:
+    $ref: ./ancestor_ids.yaml
+  collaborators:
+    $ref: ./collaborators.yaml
+  milestones: 
+    $ref: ./milestoneArray.yaml
+  goal_type_ids:
+    $ref: ./goal_type_ids.yaml
+  update_ids:
+    $ref: ./update_ids.yaml
+  issue_ids:
+    $ref: ./issue_ids.yaml
+  task_ids:
+    $ref: ./task_ids.yaml

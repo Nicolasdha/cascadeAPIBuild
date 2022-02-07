@@ -1,0 +1,8 @@
+type: array
+description: associated tasks
+items:
+  type: number
+example:
+  - 12
+  - 13
+  - 14

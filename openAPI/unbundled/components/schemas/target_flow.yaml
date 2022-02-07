@@ -1,0 +1,9 @@
+type: string
+description: >
+  The tracking direction of the goal. If `OVER`, higher values are better. If
+  `UNDER`, lower values are better.
+enum:
+  - OVER
+  - UNDER
+  - NONE
+example: NONE

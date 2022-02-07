@@ -1,0 +1,6 @@
+type: string
+format: binary
+description: Maximum 16 MiB
+default: null
+example: '{"row":"0","col":"0","width":"3","height":"1"}'
+nullable: true

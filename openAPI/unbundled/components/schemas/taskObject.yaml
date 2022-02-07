@@ -1,0 +1,44 @@
+type: object
+description: A task object
+properties:
+  id:
+    $ref: ./id.yaml
+  task:
+    $ref: ./taskDescription.yaml
+  comment:
+    $ref: ./comment.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  is_complete:
+    type: number
+    description: whether the task is complete
+  completed_at:
+    $ref: ./completed_at.yaml
+  updated_at:
+    $ref: ./updated_at.yaml
+  user_id:
+    $ref: ./user_id.yaml
+  role_id:
+    $ref: ./role_id.yaml
+  completed_user_id:
+    type: integer
+    description: ID of user who marked this task complete
+    example: 2
+  goal_id:
+    $ref: ./goal_id.yaml
+  thread_id:
+    $ref: ./thread_id.yaml
+  file_id:
+    $ref: ./file_id.yaml
+  start_date:
+    $ref: ./start_date.yaml
+  due_date:
+    $ref: ./due_date.yaml
+  weight_id:
+    $ref: ./weight_id.yaml
+  entity_template_id:
+    $ref: ./entity_template_id.yaml
+  custom_attributes:
+    $ref: ./customAttributes.yaml
+  thread:
+    $ref: ./thread.yaml

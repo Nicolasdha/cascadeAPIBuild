@@ -1,0 +1,30 @@
+type: object
+description: An object to create roles
+required:
+  - client_id
+  - title
+  - org_unit_id
+  - role_family_id
+properties:
+  client_id:
+    $ref: ./client_id.yaml
+  title:
+    $ref: ./title.yaml
+  org_unit_id:
+    description: ID of associated `org_unit`
+    type: number
+  role_family_id:
+    description: ID of associated `role_family_id`
+  parent_id:
+    $ref: ./parent_id.yaml
+  employment_type:
+    $ref: ./employment_type.yaml
+example:
+  {"role": {
+              "client_id": "R0005",
+              "title": "A new role",
+              "org_unit_id": 2,
+              "role_family_id": 1,
+              "employment_type": "PTIME",
+              "parent_id": 2
+    }}

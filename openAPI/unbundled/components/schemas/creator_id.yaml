@@ -1,0 +1,5 @@
+type: integer
+description: The ID of the user who created the goal
+example: 3
+nullable: true
+default: null

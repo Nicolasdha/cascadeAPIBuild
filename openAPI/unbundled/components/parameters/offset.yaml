@@ -1,0 +1,8 @@
+in: query
+name: offset
+required: false
+schema:
+  type: integer
+  default: 1
+  example: 1
+description: The offset for pagination.

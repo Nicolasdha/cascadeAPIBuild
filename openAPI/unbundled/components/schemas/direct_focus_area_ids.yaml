@@ -1,0 +1,6 @@
+type: array
+items:
+  type: number
+example:
+  - 1
+  - 2

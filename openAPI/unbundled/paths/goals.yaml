@@ -1,0 +1,97 @@
+get:
+  tags:
+    - Goals
+  summary: List goals
+  description: >
+    Fetch some or all goal records, using filters to fetch subsets.
+
+
+    To filter the response to a subset of goals, use the query params.
+
+    If you want to include multiple values in a param, you can separate them
+    with commas.
+
+    For example, this call returns goals that have `id` values of `1` and `2`
+
+
+    ```shell
+
+    curl --location --request GET
+    'https://csegeneral.executestrategy.net/api/v2/goals?id=1,2'
+
+    --header 'Authorization: Bearer {token}'
+
+    ```
+  operationId: list-goals
+  parameters:
+    - $ref: ../components/parameters/offset.yaml
+    - $ref: ../components/parameters/limit.yaml
+    - $ref: ../components/parameters/role_id.yaml
+    - $ref: ../components/parameters/creator_id.yaml
+    - $ref: ../components/parameters/status.yaml
+    - $ref: ../components/parameters/completion_criteria.yaml
+    - $ref: ../components/parameters/target_flow.yaml
+    - $ref: ../components/parameters/action.yaml
+    - $ref: ../components/parameters/detail.yaml
+    - $ref: ../components/parameters/initial.yaml
+    - $ref: ../components/parameters/threshold.yaml
+    - $ref: ../components/parameters/progress.yaml
+    - $ref: ../components/parameters/target.yaml
+    - $ref: ../components/parameters/unit_id.yaml
+    - $ref: ../components/parameters/start_time.yaml
+    - $ref: ../components/parameters/end_time.yaml
+    - $ref: ../components/parameters/weight_id.yaml
+    - $ref: ../components/parameters/link.yaml
+    - $ref: ../components/parameters/why_type.yaml
+    - $ref: ../components/parameters/why.yaml
+    - $ref: ../components/parameters/is_private.yaml
+    - $ref: ../components/parameters/tracking_type.yaml
+    - $ref: ../components/parameters/created_at.yaml
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              goals:
+                $ref: ../components/schemas/goalArray.yaml
+              meta:
+                $ref: ../components/schemas/meta.yaml
+    '401':
+      description: Invalid auth token
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/401.yaml
+    '500':
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/500.yaml
+post:
+  tags:
+    - Goals
+  operationId: create-goal
+  summary: Create a goal
+  description: Create a new goal in your Cascade instance.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            goal:
+              $ref: ../components/schemas/goalCreate.yaml
+      application/xml:
+        schema:
+          type: object
+          properties: {}
+  responses:
+    '201':
+      $ref: ../components/responses/201.yaml
+    '422':
+      $ref: ../components/responses/422.yaml

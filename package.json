@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "openapi": "^1.0.1",
+    "redoc": "*",
+    "redoc-cli": "^0.13.7"
+  }
+}

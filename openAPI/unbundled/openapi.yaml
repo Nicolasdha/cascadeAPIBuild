@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  description: >-
+    ![Cascadelogo](https://www.cascade.app/hubfs/cascade-logo-svg.svg)
+
+
+
+    The Cascade REST API
+
+
+    **NOTE:** Cascade is working on a new, more flexible version of the API.
+    This REST API will be deprecated. Cascade advises against building any
+    complex logic on it.
+  title: Cascade Public API
+  version: '2'
+  contact:
+    email: support@cascade.app
+servers:
+  - url: 'https://{subdomain}.executestrategy.net/api/v2'
+    variables:
+      subdomain:
+        default: environment
+        description: The name of your Cascade instance
+tags:
+  - name: Goals
+    description: >-
+      *Goals* are the core resource of the Cascade application. They are the
+      elementary units of a strategic plan.
+  - name: Issues
+    description: >-
+      *Issues* document problems and risks for a particular goal.
+
+      In Cascade's help articles and UI-facing documentation, issues are usually
+      referred to as "risks."
+  - name: Entity templates
+    description: >-
+      *Entity templates* let you make custom fields for your goals and
+      workflows.
+
+      To work with entity templates in the UI, select your profile, then
+      **Customize Fields**.
+  - name: Org units
+    description: >-
+      *Org units* represent individual components of your organization
+      hierarchy.
+  - name: Roles
+    description: >-
+      *Roles* are the positions that users have in your organization. They are
+      also how Cascade manages permissions and resource ownership.
+
+      Roles are deeply connected to some key features of the Cascade
+      application:
+
+      * Each user has a role.
+
+      * All permissions are based on roles.
+
+      * Each goal is associated with a specific roles.
+
+      Besides assigning permissions and goals, you can also use roles to emulate
+      the structure of your internal organization within your Cascade instance.
+      For example, every manager can have the role `Manager`, and every
+      supervisor can have the role `Supervisor`, etc.
+  - name: Tasks
+    description: >-
+      *Tasks* are the individual bits of work that combine together to complete
+      a goal. You can use tasks to break up individual components of a goal.
+  - name: Users
+    description: '*Users* in your Cascade instance.'
+  - name: Updates
+    description: '*Updates* are written comments that describe a goal''s progress.'
+x-tagGroups:
+  - name: Goals and related objects
+    tags:
+      - Goals
+      - Tasks
+      - Issues
+      - Updates
+      - Entity templates
+  - name: Admin
+    tags:
+      - Users
+      - Roles
+      - Org units
+paths:
+  /goals:
+    $ref: paths/goals.yaml
+  '/goals/{id}':
+    $ref: 'paths/goals@{id}.yaml'
+  '/goals/{id}/milestones':
+    $ref: 'paths/goals@{id}@milestones.yaml'
+  /issues:
+    $ref: paths/issues.yaml
+  '/issues/{id}':
+    $ref: 'paths/issues@{id}.yaml'
+  /updates:
+    $ref: paths/updates.yaml
+  '/updates/{id}':
+    $ref: 'paths/updates@{id}.yaml'
+  /tasks:
+    $ref: paths/tasks.yaml
+  '/tasks/{id}':
+    $ref: 'paths/tasks@{id}.yaml'
+  /entity_templates:
+    $ref: paths/entity_templates.yaml
+  '/entity_templates/{id}':
+    $ref: 'paths/entity_templates@{id}.yaml'
+  /org_units:
+    $ref: paths/org_units.yaml
+  '/org_units/{id}':
+    $ref: 'paths/org_units@{id}.yaml'
+  /users:
+    $ref: paths/users.yaml
+  '/users/{id}':
+    $ref: 'paths/users@{id}.yaml'
+  /roles:
+    $ref: paths/roles.yaml
+  '/roles/{id}':
+    $ref: 'paths/role@{id}.yaml'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >
+
+        Authorize your requests with a bearer token.
+
+
+        To get a token, log in to your Cascade instance, then go to **Profile >
+        Security**.
+
+
+        A request looks like this. Your token would go where the `<token>`
+        placeholder text is.
+
+
+
+        ```
+
+        curl --location --request GET
+        'https://csegeneral.executestrategy.net/api/v2/goals?id=1,2'
+
+        --header 'Authorization: Bearer <token>'
+
+        ```
+security:
+  - bearerAuth: []

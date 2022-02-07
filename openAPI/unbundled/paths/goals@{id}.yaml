@@ -1,0 +1,49 @@
+get:
+  tags:
+    - Goals
+  summary: 'Get a goal, based on id'
+  operationId: get-goal
+  description: >
+    To retrieve a single goal, make a request to the `/goals/{id}` endpoint. In
+    this case, `id` represents the ID of the goal.
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+    - $ref: ../components/parameters/offset.yaml
+    - $ref: ../components/parameters/limit.yaml
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              goal:
+                $ref: ../components/schemas/goalObject.yaml
+put:
+  tags:
+    - Goals
+  summary: Update a goal
+  operationId: update-goal
+  description: >-
+    To update a goal, send a PUT request to the `goals/{id}` endpoint, where
+    `id` represents the goal you want to update.
+
+    Use the request body to update fields. The only required request body field
+    is `id`.
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          required:
+            - id
+          type: object
+          properties:
+            goal:
+              $ref: ../components/schemas/goalObject.yaml
+  responses:
+    '200':
+      description: Successful operation

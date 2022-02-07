@@ -1,0 +1,3 @@
+type: string
+description: The task's title in the UI.
+example: rewrite

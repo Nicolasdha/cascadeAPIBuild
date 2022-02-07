@@ -1,0 +1,18 @@
+get:
+  tags:
+    - Entity templates
+  summary: Get template
+  description: 'Get a template, using its `id` as a path parameter'
+  operationId: get-template
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              entity_template:
+                $ref: ../components/schemas/entityObject.yaml

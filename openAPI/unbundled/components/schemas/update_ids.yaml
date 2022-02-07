@@ -1,0 +1,8 @@
+type: array
+items:
+  type: number
+description: associated updates
+example:
+  - 1
+  - 23
+  - 56

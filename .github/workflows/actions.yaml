@@ -1,0 +1,31 @@
+name: redoc
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Build API page
+        uses: seeebiii/redoc-cli-github-action@v10
+        with:
+          args: 'bundle openAPI/unbundled/openapi.yaml -o openAPI/api-doc.html'
+      
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add openAPI/api-doc.html
+          git commit -m "Makes HTML file for ${{ github.event.before }}" \
+            || echo "There was nothing to commit"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

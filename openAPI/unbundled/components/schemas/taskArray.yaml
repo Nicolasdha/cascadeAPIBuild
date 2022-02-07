@@ -1,0 +1,4 @@
+type: array
+description: An array of tasks
+items:
+  $ref: ./taskObject.yaml

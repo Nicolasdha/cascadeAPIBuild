@@ -1,0 +1,5 @@
+type: string
+maxLength: 7
+example: null
+default: null
+nullable: true

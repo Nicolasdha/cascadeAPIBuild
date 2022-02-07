@@ -1,0 +1,4 @@
+type: string
+description: 'The unique ID of the resource in your system, e.g. user ID, or role ID.'
+example: U8132B5E78
+maxLength: 10

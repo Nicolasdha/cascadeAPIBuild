@@ -1,0 +1,27 @@
+get:
+  tags:
+    - Org units
+  summary: List org units
+  description: >-
+    Fetch some or all org unit records, using filters to fetch subsets.
+
+    In addition to `limit` and `offset`, you can also pass any field in the
+    `org_unit` object as a query parameter.
+  operationId: list-orgs
+  parameters:
+    - $ref: ../components/parameters/limit.yaml
+    - $ref: ../components/parameters/offset.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              org_units:
+                type: array
+                items:
+                  $ref: ../components/schemas/orgArray.yaml
+              meta:
+                $ref: ../components/schemas/meta.yaml

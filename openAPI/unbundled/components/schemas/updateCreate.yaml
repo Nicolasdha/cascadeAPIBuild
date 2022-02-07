@@ -1,0 +1,21 @@
+type: object
+description: Request body to create an update
+required:
+  - goal_id
+properties:
+  comment:
+    $ref: ./comment.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  updated_at:
+    $ref: ./updated_at.yaml
+  user_id:
+    $ref: ./user_id.yaml
+  goal_id:
+    $ref: ./goal_id.yaml
+  thread_id:
+    $ref: ./thread_id.yaml
+  file_id:
+    $ref: ./file_id.yaml
+  custom_attributes:
+    $ref: ./customAttributes.yaml

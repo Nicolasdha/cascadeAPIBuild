@@ -1,0 +1,70 @@
+get:
+  tags:
+    - Updates
+  summary: Get Update
+  description: 'Get an update, using its `id` as a path parameter'
+  operationId: get-update
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              update:
+                $ref: ../components/schemas/updateObject.yaml
+put:
+  tags:
+    - Updates
+  summary: Update update
+  operationId: update-update
+  description: >-
+    Update an update, using its `id` as a path parameter.
+
+    In the request body, update fields in a top-level `update` object. No field
+    is required, but you MUST send at least one field.
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - id
+          type: object
+          properties:
+            update:
+              $ref: ../components/schemas/updateObject.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              task:
+                $ref: ../components/schemas/updateObject.yaml
+    '404':
+      $ref: ../components/responses/404.yaml
+    '422':
+      $ref: ../components/responses/422.yaml
+delete:
+  tags:
+    - Updates
+  summary: Delete update
+  operationId: delete-update
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  description: |-
+    **Be careful!** This action is irreversible.
+
+    Deletes an update, using the update's `id` in the path parameters.
+  responses:
+    '204':
+      $ref: ../components/responses/204.yaml
+    '404':
+      $ref: ../components/responses/404.yaml

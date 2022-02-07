@@ -1,0 +1,8 @@
+oneOf:
+  - type: integer
+  - type: string
+description: >
+  Date when the resource was created, in [Unix
+  time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+  format](https://en.wikipedia.org/wiki/ISO_8601)
+example: '2021-11-26T17:43:08+00:00'

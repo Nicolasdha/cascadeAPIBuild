@@ -1,0 +1,54 @@
+description: The object to create a goal
+required:
+  - action
+  - details
+  - weight_id
+  - start_time
+  - end_time
+properties:
+  action:
+    $ref: ./action.yaml
+  details:
+    $ref: ./details.yaml
+  weight_id:
+    $ref: ./weight_id.yaml
+  start_time:
+    $ref: ./start_time.yaml
+  end_time:
+    $ref: ./end_time.yaml
+  role_id:
+    $ref: ./role_id.yaml
+  creator_id:
+    $ref: ./creator_id.yaml
+  initial:
+    $ref: ./initial.yaml
+  status:
+    $ref: ./status.yaml
+  threshold:
+    $ref: ./threshold.yaml
+  completion_criteria:
+    $ref: ./completion_criteria.yaml
+  target:
+    $ref: ./target.yaml
+  target_flow:
+    $ref: ./target_flow.yaml
+  progress:
+    $ref: ./progress.yaml
+  unit_id:
+    $ref: ./unit_id.yaml
+  link:
+    $ref: ./link.yaml
+  why_type:
+    $ref: ./why_type.yaml
+  why:
+    $ref: ./why.yaml
+  is_private:
+    $ref: ./is_private.yaml
+  tracking_type:
+    $ref: ./tracking_type.yaml
+  custom_attributes:
+    $ref: ./customAttributes.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  updated_at:
+    $ref: ./created_at.yaml

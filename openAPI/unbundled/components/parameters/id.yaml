@@ -1,0 +1,5 @@
+in: path
+name: id
+schema:
+  $ref: ../schemas/id.yaml
+required: true

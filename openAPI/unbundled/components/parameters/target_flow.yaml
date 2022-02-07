@@ -1,0 +1,5 @@
+name: target_flow
+in: query
+required: false
+schema:
+  $ref: ../schemas/target_flow.yaml

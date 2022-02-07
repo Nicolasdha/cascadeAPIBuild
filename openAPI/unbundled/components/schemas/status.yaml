@@ -1,0 +1,8 @@
+type: string
+description: Determines the state of the goal
+enum:
+  - APPRO
+  - DRAFT
+  - ARCHI
+default: DRAFT
+example: DRAFT

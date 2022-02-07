@@ -1,0 +1,83 @@
+get:
+  tags:
+    - Updates
+  summary: List updates
+  description: >-
+    Fetch some or all update records, using filters to fetch subsets.
+
+    In addition to `limit` and `offset`, you can also pass any field in the
+    `update` object as a query parameter.
+  operationId: list-updates
+  parameters:
+    - $ref: ../components/parameters/limit.yaml
+    - $ref: ../components/parameters/offset.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              updates:
+                type: array
+                items:
+                  $ref: ../components/schemas/updateArray.yaml
+              meta:
+                $ref: ../components/schemas/meta.yaml
+post:
+  tags:
+    - Updates
+  operationId: create-update
+  summary: Create an update
+  description: |-
+    Add a new update to a goal.
+    Request body MUST include the fields `update` and `goal_id`.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            update:
+              $ref: ../components/schemas/updateCreate.yaml
+      application/xml:
+        schema:
+          type: object
+          properties: {}
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            example:
+              update:
+                id: '21'
+                update: Nearly out of funds
+                comment: null
+                is_critical: 0
+                is_resolved: 0
+                created_at: '2021-12-14T20:09:46+00:00'
+                updated_at: '2021-12-14T20:09:46+00:00'
+                user_id: 1
+                role_id: 2
+                goal_id: 13
+                thread_id: 125
+                file_id: null
+                due_date: '2021-10-25T13:00:00+00:00'
+                entity_template_id: 5
+                custom_attributes:
+                  CA1573011281053: 5
+                  CA1573011296755: 1
+                  CA1573011364578: 5
+                  CA1573011427674: 5
+                thread:
+                  id: 125
+                  created_at: '2021-12-14T20:09:46+00:00'
+                  updated_at: '2021-12-14T20:09:46+00:00'
+                  is_locked: 0
+                  comments: []
+    '422':
+      $ref: ../components/responses/422.yaml

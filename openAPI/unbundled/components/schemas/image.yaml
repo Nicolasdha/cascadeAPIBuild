@@ -1,0 +1,5 @@
+type: string
+format: binary
+default: null
+example: null
+nullable: true

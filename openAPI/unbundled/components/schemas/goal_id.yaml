@@ -1,0 +1,3 @@
+type: integer
+description: the ID of the associated goal
+example: 15

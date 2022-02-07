@@ -1,0 +1,4 @@
+type: number
+description: |
+  Expected target of the goal
+example: 101

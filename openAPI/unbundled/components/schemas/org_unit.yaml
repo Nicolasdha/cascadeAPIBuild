@@ -1,0 +1,6 @@
+type: string
+maxLength: 50
+example: Operations
+description: The name of the org unit
+default: null
+nullable: true

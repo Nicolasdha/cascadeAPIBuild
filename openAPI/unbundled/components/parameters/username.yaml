@@ -1,0 +1,4 @@
+in: query
+name: username
+schema:
+  $ref: ../schemas/username.yaml

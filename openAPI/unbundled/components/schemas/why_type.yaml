@@ -1,0 +1,8 @@
+type: string
+description: |
+  Describes the type of extra detail provided
+enum:
+  - VIDEO
+  - RHTML
+  - NONE
+default: NONE

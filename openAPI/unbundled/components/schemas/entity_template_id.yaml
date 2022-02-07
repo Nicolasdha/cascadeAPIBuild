@@ -1,0 +1,5 @@
+type: integer
+description: ID of associated entity template
+example: 12
+default: null
+nullable: true

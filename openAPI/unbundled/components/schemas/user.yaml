@@ -1,0 +1,51 @@
+type: object
+description: Information about a user in your Cascade instance
+properties:
+  id:
+    $ref: ./id.yaml
+  client_id:
+    $ref: ./client_id.yaml
+  username:
+    $ref: ./username.yaml
+  email:
+    $ref: ./email.yaml
+  first_name:
+    $ref: ./first_name.yaml
+  last_name:
+    $ref: ./last_name.yaml
+  role_id:
+    $ref: ./role_id.yaml
+example:
+  user:
+    id: 5
+    client_id: U0F53915B7
+    username: Eriberto_Blanda67@example.net
+    is_enabled: 0
+    is_locked: 0
+    is_notified: 0
+    is_restricted: 0
+    is_archived: 0
+    first_name: Kristoffer
+    last_name: Tester 4
+    email: Tressie_Jacobi16@example.com
+    creation_time: '2021-11-26T18:25:15+00:00'
+    last_login_ip: null
+    last_login_time: null
+    role_id: null
+    current_appointment_id: null
+    invitation_id: null
+    appointment_ids: []
+    appraisal_ids: []
+    meeting_ids: []
+    survey_campaign_ids: []
+    survey_ids: []
+    competency_assessment_ids: []
+    dashboard_ids: []
+    dashboard_configuration_ids: []
+    links:
+      events: /api/v2/users/5/events
+      user_configs: /api/v2/users/5/user_configs
+      scheduled_jobs: /api/v2/users/5/scheduled_jobs
+      snapshots: /api/v2/users/5/snapshots
+      job_applications: /api/v2/users/5/job_applications
+      statistic: /api/v2/users/5/statistic

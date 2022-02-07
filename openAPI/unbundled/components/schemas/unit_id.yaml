@@ -1,0 +1,9 @@
+type: integer
+description: >-
+  What unit the goal uses for tracking
+
+  `1` measures in percent; `2`, in arbitrary units; `3`, in money; `4`, in
+  people.
+example: 1
+minimum: 1
+maximum: 4

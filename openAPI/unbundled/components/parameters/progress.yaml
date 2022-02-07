@@ -1,0 +1,5 @@
+name: progress
+in: query
+required: false
+schema:
+  $ref: ../schemas/progress.yaml

@@ -1,0 +1,4 @@
+oneOf:
+  - type: boolean
+  - type: integer
+example: true

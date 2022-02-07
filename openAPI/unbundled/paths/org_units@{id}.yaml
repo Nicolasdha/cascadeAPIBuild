@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Org units
+  summary: Get unit
+  description: 'Get an organization unit, using its `id` as a path parameter'
+  operationId: get-org
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              org_unit:
+                $ref: ../components/schemas/orgObject.yaml
+delete:
+  tags:
+    - Org units
+  summary: Delete org
+  operationId: delete-org
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  description: |-
+    **Be careful!** This action is irreversible.
+
+    Deletes a org_unit, using the org's `id` in the path parameters.
+  responses:
+    '204':
+      $ref: ../components/responses/204.yaml
+    '404':
+      $ref: ../components/responses/404.yaml

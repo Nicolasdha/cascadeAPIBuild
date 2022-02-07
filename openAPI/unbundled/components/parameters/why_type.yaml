@@ -1,0 +1,5 @@
+name: why_type
+in: query
+required: false
+schema:
+  $ref: ../schemas/why_type.yaml

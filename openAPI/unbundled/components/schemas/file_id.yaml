@@ -1,0 +1,4 @@
+type: integer
+example: 12
+nullable: true
+description: ID of file

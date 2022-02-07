@@ -1,0 +1,5 @@
+name: updated_at
+in: query
+required: false
+schema:
+  $ref: ../schemas/created_at.yaml

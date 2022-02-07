@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    $ref: ./id.yaml
+  entity_template_id:
+    $ref: ./parent_id.yaml
+  settings:
+    $ref: ./settings.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  updated_at:
+    $ref: ./updated_at.yaml
+  attribute:
+    $ref: ./attribute.yaml

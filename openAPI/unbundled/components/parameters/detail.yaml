@@ -1,0 +1,5 @@
+name: detail
+in: query
+required: false
+schema:
+  $ref: ../schemas/details.yaml

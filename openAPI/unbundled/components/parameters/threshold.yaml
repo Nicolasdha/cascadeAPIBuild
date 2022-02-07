@@ -1,0 +1,5 @@
+name: threshold
+in: query
+required: false
+schema:
+  $ref: ../schemas/threshold.yaml

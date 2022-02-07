@@ -1,0 +1,6 @@
+oneOf:
+  - type: number
+  - type: boolean
+example: true
+minimum: 0
+maximum: 1

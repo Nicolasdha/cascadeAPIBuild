@@ -1,0 +1,20 @@
+type: array
+description: the associated comments
+items:
+  type: object
+  properties:
+    id:
+      $ref: ./id.yaml
+    created_at:
+      $ref: ./created_at.yaml
+    comment:
+      $ref: ./comment.yaml
+    user_id:
+      $ref: ./user_id.yaml
+    thread_id:
+      $ref: ./thread_id.yaml
+    has_history:
+      type: boolean
+      example: true
+    links:
+      $ref: ./links.yaml

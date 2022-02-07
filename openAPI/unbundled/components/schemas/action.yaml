@@ -1,0 +1,8 @@
+type: string
+description: >-
+  The action to accomplish the goal, task, etc. In the Cascade UI, `action`
+  might also serve as the verb in the resource's title.
+example: complete
+maxLength: 25
+nullable: true
+default: null

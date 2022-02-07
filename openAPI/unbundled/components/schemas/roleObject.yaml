@@ -1,0 +1,68 @@
+description: A role object
+type: object
+properties:
+  id:
+    $ref: ./id.yaml
+  client_id:
+    $ref: ./client_id.yaml
+  title:
+    $ref: ./title.yaml
+  employment_type:
+    $ref: ./employment_type.yaml
+  lft:
+    $ref: ./lft.yaml
+  rgt:
+    $ref: ./rgt.yaml
+  parent_id:
+    $ref: ./parent_id.yaml
+  role_family_id:
+    type: integer
+  user_id:
+    $ref: ./user_id.yaml
+  current_appointment_id:
+    type: integer
+  level:
+    $ref: ./level.yaml
+  role_ids:
+    type: array
+    items:
+      type: integer
+  privilege_ids:
+    type: array
+    description: The permissions the role has
+    items:
+      type: integer
+  links:
+    $ref: ./links.yaml
+example:
+  role:
+    id: 2
+    client_id: R0001
+    org_unit_id: 2
+    title: CFO
+    employment_type: null
+    lft: 2
+    rgt: 7
+    parent_id: 1
+    role_family_id: 1
+    user_id: 1
+    current_appointment_id: 4
+    level: 1
+    role_ids:
+      - 3
+      - 4
+    privilege_ids:
+      - 1
+      - 2
+      - 5
+      - 3
+      - 4
+      - 6
+    links:
+      immediate_roles: /api/v2/roles/2/immediate_roles
+      goals: /api/v2/roles/2/goals
+      collaborations: /api/v2/roles/2/collaborations
+      goal_watchers: /api/v2/roles/2/goal_watchers
+      notifications: /api/v2/roles/2/notifications
+      appointments: /api/v2/roles/2/appointments
+      assigned_tasks: /api/v2/roles/2/assigned_tasks

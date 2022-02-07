@@ -1,0 +1,70 @@
+get:
+  tags:
+    - Roles
+  summary: Get role
+  description: 'Get a role, using its `id` as a path parameter'
+  operationId: get-role
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              role:
+                $ref: ../components/schemas/roleObject.yaml
+put:
+  tags:
+    - roles
+  summary: Update role
+  operationId: update-role
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  description: >-
+    Update an issue, using its `id` as a path parameter.
+
+    In the request body, update fields in a top-level `role` object. No field is
+    required, but you MUST send at least one field.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - id
+          type: object
+          properties:
+            role:
+              $ref: ../components/schemas/roleObject.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              role:
+                $ref: ../components/schemas/roleObject.yaml
+    '404':
+      $ref: ../components/responses/404.yaml
+    '422':
+      $ref: ../components/responses/422.yaml
+delete:
+  tags:
+    - Roles
+  summary: Delete role
+  operationId: delete-role
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  description: |-
+    **Be careful!** This action is irreversible.
+
+    Deletes a role, using the role's `id` in the path parameters.
+  responses:
+    '204':
+      $ref: ../components/responses/204.yaml
+    '404':
+      $ref: ../components/responses/404.yaml

@@ -1,0 +1,51 @@
+get:
+  tags:
+    - Users
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  summary: Get a user
+  description: 'Returns all information about the user, specified by the `id`'
+  operationId: get-user
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/user.yaml
+put:
+  tags:
+    - Users
+  summary: Update user
+  operationId: update-user
+  description: >-
+    Update a user's, using its `id` as a path parameter.
+
+    In the request body, update fields in a top-level `user` object. No field is
+    required, but you MUST send at least one field.
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - id
+          type: object
+          properties:
+            user:
+              $ref: ../components/schemas/user.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                $ref: ../components/schemas/user.yaml
+    '404':
+      $ref: ../components/responses/404.yaml
+    '422':
+      $ref: ../components/responses/422.yaml

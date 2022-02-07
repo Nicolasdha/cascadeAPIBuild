@@ -1,0 +1,38 @@
+description: >-
+  Custom Attributes for Issues (a.k.a risks).
+  There are four fields:
+
+   - `CA1573011281053`: Likelihood
+   - `CA1573011296755`: Consequence
+   - `CA1573011364578`: Risk Score Value
+   - `CA1573011427674`: Risk Score
+
+  You can configure values for `likelihood` and `consequence`.
+
+
+  Cascade supplies values for `Risk Score` and `Risk Score Value`.
+type: object
+properties:
+  CA1573011281053:
+    description: The likelihood score
+    type: integer
+    example: 4
+    minimum: 1
+    maximum: 5
+  CA1573011296755:
+    description: The consequence score
+    type: integer
+    example: 4
+    minimum: 1
+    maximum: 5
+  CA1573011427674:
+    description: Risk score, calculated in Cascade
+  CA1573011364578:
+    description: Risk score value, calculated in Cascade
+
+example:
+    {
+    "CA1573011427674": null,
+    "CA1573011281053": 5,
+    "CA1573011296755": 4,
+    "CA1573011364578": null}

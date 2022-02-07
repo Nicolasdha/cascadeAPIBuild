@@ -1,0 +1,5 @@
+name: is_private
+in: query
+required: false
+schema:
+  $ref: ../schemas/is_private.yaml

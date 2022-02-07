@@ -1,0 +1,5 @@
+name: tracking_type
+in: query
+required: false
+schema:
+  $ref: ../schemas/tracking_type.yaml

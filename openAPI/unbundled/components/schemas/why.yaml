@@ -1,0 +1,6 @@
+type: string
+nullable: true
+description: |
+  Extra detail about the goal, in the form of its `why_type`
+default: null
+example: null

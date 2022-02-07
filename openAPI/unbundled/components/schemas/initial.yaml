@@ -1,0 +1,6 @@
+type: number
+description: |
+  Initial progress of the goal
+nullable: false
+default: 0
+example: 0

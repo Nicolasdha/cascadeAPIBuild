@@ -1,0 +1,26 @@
+type: object
+description: A request object to create a user.
+required:
+  - username
+  - email
+  - first_name
+  - last_name
+properties:
+  user:
+    type: object
+    description: Top-level object that holds user data
+    properties:
+      client_id:
+        $ref: ./client_id.yaml
+      username:
+        $ref: ./username.yaml
+      email:
+        $ref: ./email.yaml
+      first_name:
+        $ref: ./first_name.yaml
+      last_name:
+        $ref: ./last_name.yaml
+      password:
+        type: string
+        description: An optional password for the user's first login
+        example: PleaseMakeYourPasswordsLong

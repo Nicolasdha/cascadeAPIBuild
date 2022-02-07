@@ -1,0 +1,6 @@
+type: string
+description: >
+  Expected end time of the goal, in [Unix
+  time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+  format](https://en.wikipedia.org/wiki/ISO_8601)
+example: '2022-01-15T21:45:44+00:00'

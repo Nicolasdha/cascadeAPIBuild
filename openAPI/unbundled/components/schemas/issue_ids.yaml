@@ -1,0 +1,7 @@
+type: array
+items:
+  type: number
+description: associated issues
+example:
+  - 3
+  - 4

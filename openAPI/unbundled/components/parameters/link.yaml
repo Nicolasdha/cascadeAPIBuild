@@ -1,0 +1,5 @@
+name: link
+in: query
+required: false
+schema:
+  $ref: ../schemas/links.yaml

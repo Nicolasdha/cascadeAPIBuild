@@ -1,0 +1,8 @@
+type: object
+description: meta-data about the response
+properties:
+  total:
+    type: integer
+    description: The total number of resources returned available with these filters
+example:
+  total: 45

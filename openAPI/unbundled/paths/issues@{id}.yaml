@@ -1,0 +1,72 @@
+get:
+  tags:
+    - Issues
+  summary: Get Issue
+  description: 'Get an issue, using its `id` as a path parameter'
+  operationId: get-issue
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              issue:
+                $ref: ../components/schemas/issueObject.yaml
+put:
+  tags:
+    - Issues
+  summary: Update issue
+  operationId: update-issue
+  description: >-
+    Update an issue, using its `id` as a path parameter.
+
+    In the request body, update fields in a top-level `issue` object. No field
+    is required, but you MUST send at least one field.
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - id
+          type: object
+          properties:
+            issue:
+              $ref: ../components/schemas/issueObject.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              task:
+                $ref: ../components/schemas/issueObject.yaml
+    '404':
+      $ref: ../components/responses/404.yaml
+    '422':
+      $ref: ../components/responses/422.yaml
+delete:
+  tags:
+    - Issues
+  summary: Delete issue
+  operationId: delete-issue
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  description: |-
+    **Be careful!** This action is irreversible.
+
+    
+    Deletes an issue, using the issue's `id` in the path parameters.
+  responses:
+    '204':
+      $ref: ../components/responses/204.yaml
+    '404':
+      $ref: ../components/responses/404.yaml
+  

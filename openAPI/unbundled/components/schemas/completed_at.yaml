@@ -1,0 +1,9 @@
+oneOf:
+  - type: integer
+  - type: string
+type: string
+description: >
+  Date when the resource was completed, in [Unix
+  time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+  format](https://en.wikipedia.org/wiki/ISO_8601)
+example: '2021-12-29T00:00:08+00:00'

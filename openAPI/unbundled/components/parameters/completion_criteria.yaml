@@ -1,0 +1,5 @@
+name: completion_criteria
+in: query
+required: false
+schema:
+  $ref: ../schemas/completion_criteria.yaml

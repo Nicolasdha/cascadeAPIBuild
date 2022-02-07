@@ -1,0 +1,2550 @@
+openapi: 3.0.3
+info:
+  description: >-
+    ![Cascadelogo](https://www.cascade.app/hubfs/cascade-logo-svg.svg)
+
+
+
+    The Cascade REST API
+
+
+    **NOTE:** Cascade is working on a new, more flexible version of the API.
+    This REST API will be deprecated. Cascade advises against building any
+    complex logic on it.
+  title: Cascade Public API
+  version: '2'
+  contact:
+    email: support@cascade.app
+servers:
+  - url: https://{subdomain}.executestrategy.net/api/v2
+    variables:
+      subdomain:
+        default: environment
+        description: The name of your Cascade instance
+tags:
+  - name: Goals
+    description: >-
+      *Goals* are the core resource of the Cascade application. They are the
+      elementary units of a strategic plan.
+  - name: Issues
+    description: >-
+      *Issues* document problems and risks for a particular goal.
+
+      In Cascade's help articles and UI-facing documentation, issues are usually
+      referred to as "risks."
+  - name: Entity templates
+    description: >-
+      *Entity templates* let you make custom fields for your goals and
+      workflows.
+
+      To work with entity templates in the UI, select your profile, then
+      **Customize Fields**.
+  - name: Org units
+    description: >-
+      *Org units* represent individual components of your organization
+      hierarchy.
+  - name: Roles
+    description: >-
+      *Roles* are the positions that users have in your organization. They are
+      also how Cascade manages permissions and resource ownership.
+
+      Roles are deeply connected to some key features of the Cascade
+      application:
+
+      * Each user has a role.
+
+      * All permissions are based on roles.
+
+      * Each goal is associated with a specific roles.
+
+      Besides assigning permissions and goals, you can also use roles to emulate
+      the structure of your internal organization within your Cascade instance.
+      For example, every manager can have the role `Manager`, and every
+      supervisor can have the role `Supervisor`, etc.
+  - name: Tasks
+    description: >-
+      *Tasks* are the individual bits of work that combine together to complete
+      a goal. You can use tasks to break up individual components of a goal.
+  - name: Users
+    description: '*Users* in your Cascade instance.'
+  - name: Updates
+    description: '*Updates* are written comments that describe a goal''s progress.'
+x-tagGroups:
+  - name: Goals and related objects
+    tags:
+      - Goals
+      - Tasks
+      - Issues
+      - Updates
+      - Entity templates
+  - name: Admin
+    tags:
+      - Users
+      - Roles
+      - Org units
+paths:
+  /goals:
+    get:
+      tags:
+        - Goals
+      summary: List goals
+      description: >
+        Fetch some or all goal records, using filters to fetch subsets.
+
+
+        To filter the response to a subset of goals, use the query params.
+
+        If you want to include multiple values in a param, you can separate them
+        with commas.
+
+        For example, this call returns goals that have `id` values of `1` and
+        `2`
+
+
+        ```shell
+
+        curl --location --request GET
+        'https://csegeneral.executestrategy.net/api/v2/goals?id=1,2'
+
+        --header 'Authorization: Bearer {token}'
+
+        ```
+      operationId: list-goals
+      parameters:
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/role_id'
+        - $ref: '#/components/parameters/creator_id'
+        - $ref: '#/components/parameters/status'
+        - $ref: '#/components/parameters/completion_criteria'
+        - $ref: '#/components/parameters/target_flow'
+        - $ref: '#/components/parameters/action'
+        - $ref: '#/components/parameters/detail'
+        - $ref: '#/components/parameters/initial'
+        - $ref: '#/components/parameters/threshold'
+        - $ref: '#/components/parameters/progress'
+        - $ref: '#/components/parameters/target'
+        - $ref: '#/components/parameters/unit_id'
+        - $ref: '#/components/parameters/start_time'
+        - $ref: '#/components/parameters/end_time'
+        - $ref: '#/components/parameters/weight_id'
+        - $ref: '#/components/parameters/link'
+        - $ref: '#/components/parameters/why_type'
+        - $ref: '#/components/parameters/why'
+        - $ref: '#/components/parameters/is_private'
+        - $ref: '#/components/parameters/tracking_type'
+        - $ref: '#/components/parameters/created_at'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  goals:
+                    $ref: '#/components/schemas/goalArray'
+                  meta:
+                    $ref: '#/components/schemas/meta'
+        '401':
+          description: Invalid auth token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/500'
+    post:
+      tags:
+        - Goals
+      operationId: create-goal
+      summary: Create a goal
+      description: Create a new goal in your Cascade instance.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                goal:
+                  $ref: '#/components/schemas/goalCreate'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+        '422':
+          $ref: '#/components/responses/422'
+  /goals/{id}:
+    get:
+      tags:
+        - Goals
+      summary: Get a goal, based on id
+      operationId: get-goal
+      description: >
+        To retrieve a single goal, make a request to the `/goals/{id}` endpoint.
+        In this case, `id` represents the ID of the goal.
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  goal:
+                    $ref: '#/components/schemas/goalObject'
+    put:
+      tags:
+        - Goals
+      summary: Update a goal
+      operationId: update-goal
+      description: >-
+        To update a goal, send a PUT request to the `goals/{id}` endpoint, where
+        `id` represents the goal you want to update.
+
+        Use the request body to update fields. The only required request body
+        field is `id`.
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              type: object
+              properties:
+                goal:
+                  $ref: '#/components/schemas/goalObject'
+      responses:
+        '200':
+          description: Successful operation
+  /goals/{id}/milestones:
+    post:
+      tags:
+        - Goals
+      operationId: create-milestone
+      summary: Create a milestone
+      description: Add a new milestone to a goal.
+      parameters:
+        - id: null
+          in: path
+          name: id
+          schema:
+            description: |
+              The ID of goal you want to add a milestone to.
+            type: integer
+            example: 12
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                milestones:
+                  $ref: '#/components/schemas/milestoneArray'
+              example:
+                milestones:
+                  - id: '6'
+                    end_date: '2021-10-19 02:59:59'
+                    target: 1
+                    forecast: 0
+                    label: Week 1
+                    goal_id: '15'
+                  - id: '7'
+                    end_date: '2021-10-26 02:59:59'
+                    target: 10
+                    forecast: 0
+                    label: Week 2
+                    goal_id: 15
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  milestones:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/milestoneObject'
+                example:
+                  milestones:
+                    - id: '6'
+                      end_date: '2021-10-19 02:59:59'
+                      target: 1
+                      forecast: 0
+                      label: Week 1
+                      goal_id: '15'
+                    - id: '7'
+                      end_date: '2021-10-26 02:59:59'
+                      target: 10
+                      forecast: 0
+                      label: Week 2
+                      goal_id: 15
+        '422':
+          $ref: '#/components/responses/422'
+  /issues:
+    get:
+      tags:
+        - Issues
+      summary: List issues
+      description: >-
+        Fetch some or all issue records, using filters to fetch subsets.
+
+        In addition to `limit` and `offset`, you can also pass any field in the
+        `issue` object as a query parameter.
+      operationId: list-issues
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issues:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/issueObject'
+                  meta:
+                    $ref: '#/components/schemas/meta'
+    post:
+      tags:
+        - Issues
+      operationId: create-issue
+      summary: Create an issue
+      description: |-
+        Add a new issue to a goal.
+        Request body MUST include the fields `issue` and `goal_id`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                issue:
+                  $ref: '#/components/schemas/issueCreate'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                example:
+                  issue:
+                    id: '21'
+                    issue: Nearly out of funds
+                    comment: null
+                    is_critical: 0
+                    is_resolved: 0
+                    created_at: '2021-12-14T20:09:46+00:00'
+                    updated_at: '2021-12-14T20:09:46+00:00'
+                    user_id: 1
+                    role_id: 2
+                    goal_id: 13
+                    thread_id: 125
+                    file_id: null
+                    due_date: '2021-10-25T13:00:00+00:00'
+                    entity_template_id: 5
+                    custom_attributes:
+                      CA1573011281053: 5
+                      CA1573011296755: 1
+                      CA1573011364578: 5
+                      CA1573011427674: 5
+                    thread:
+                      id: 125
+                      created_at: '2021-12-14T20:09:46+00:00'
+                      updated_at: '2021-12-14T20:09:46+00:00'
+                      is_locked: 0
+                      comments: []
+        '422':
+          $ref: '#/components/responses/422'
+  /issues/{id}:
+    get:
+      tags:
+        - Issues
+      summary: Get Issue
+      description: Get an issue, using its `id` as a path parameter
+      operationId: get-issue
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issue:
+                    $ref: '#/components/schemas/issueObject'
+    put:
+      tags:
+        - Issues
+      summary: Update issue
+      operationId: update-issue
+      description: >-
+        Update an issue, using its `id` as a path parameter.
+
+        In the request body, update fields in a top-level `issue` object. No
+        field is required, but you MUST send at least one field.
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              type: object
+              properties:
+                issue:
+                  $ref: '#/components/schemas/issueObject'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: '#/components/schemas/issueObject'
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+    delete:
+      tags:
+        - Issues
+      summary: Delete issue
+      operationId: delete-issue
+      parameters:
+        - $ref: '#/components/parameters/id'
+      description: |-
+        **Be careful!** This action is irreversible.
+
+
+        Deletes an issue, using the issue's `id` in the path parameters.
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '404':
+          $ref: '#/components/responses/404'
+  /updates:
+    get:
+      tags:
+        - Updates
+      summary: List updates
+      description: >-
+        Fetch some or all update records, using filters to fetch subsets.
+
+        In addition to `limit` and `offset`, you can also pass any field in the
+        `update` object as a query parameter.
+      operationId: list-updates
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/updateArray'
+                  meta:
+                    $ref: '#/components/schemas/meta'
+    post:
+      tags:
+        - Updates
+      operationId: create-update
+      summary: Create an update
+      description: |-
+        Add a new update to a goal.
+        Request body MUST include the fields `update` and `goal_id`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                update:
+                  $ref: '#/components/schemas/updateCreate'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                example:
+                  update:
+                    id: '21'
+                    update: Nearly out of funds
+                    comment: null
+                    is_critical: 0
+                    is_resolved: 0
+                    created_at: '2021-12-14T20:09:46+00:00'
+                    updated_at: '2021-12-14T20:09:46+00:00'
+                    user_id: 1
+                    role_id: 2
+                    goal_id: 13
+                    thread_id: 125
+                    file_id: null
+                    due_date: '2021-10-25T13:00:00+00:00'
+                    entity_template_id: 5
+                    custom_attributes:
+                      CA1573011281053: 5
+                      CA1573011296755: 1
+                      CA1573011364578: 5
+                      CA1573011427674: 5
+                    thread:
+                      id: 125
+                      created_at: '2021-12-14T20:09:46+00:00'
+                      updated_at: '2021-12-14T20:09:46+00:00'
+                      is_locked: 0
+                      comments: []
+        '422':
+          $ref: '#/components/responses/422'
+  /updates/{id}:
+    get:
+      tags:
+        - Updates
+      summary: Get Update
+      description: Get an update, using its `id` as a path parameter
+      operationId: get-update
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  update:
+                    $ref: '#/components/schemas/updateObject'
+    put:
+      tags:
+        - Updates
+      summary: Update update
+      operationId: update-update
+      description: >-
+        Update an update, using its `id` as a path parameter.
+
+        In the request body, update fields in a top-level `update` object. No
+        field is required, but you MUST send at least one field.
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              type: object
+              properties:
+                update:
+                  $ref: '#/components/schemas/updateObject'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: '#/components/schemas/updateObject'
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+    delete:
+      tags:
+        - Updates
+      summary: Delete update
+      operationId: delete-update
+      parameters:
+        - $ref: '#/components/parameters/id'
+      description: |-
+        **Be careful!** This action is irreversible.
+
+        Deletes an update, using the update's `id` in the path parameters.
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '404':
+          $ref: '#/components/responses/404'
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: List tasks
+      description: >-
+        Fetch some or all task records, using filters to fetch subsets.
+
+        In addition to `limit` and `offset`, you can also pass any field in the
+        `task` object as a query parameter.
+      operationId: list-tasks
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/taskArray'
+                  meta:
+                    $ref: '#/components/schemas/meta'
+    post:
+      tags:
+        - Tasks
+      summary: Create a task
+      operationId: create-task
+      description: |-
+        Add a new task to a goal.
+        Request body MUST include the fields `task` and `goal_id`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  $ref: '#/components/schemas/taskCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+        '422':
+          $ref: '#/components/responses/422'
+  /tasks/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: Get Task
+      description: Get a task, using its `id` as a path parameter
+      operationId: get-task
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: '#/components/schemas/taskObject'
+    put:
+      tags:
+        - Tasks
+      summary: Update task
+      operationId: update-task
+      parameters:
+        - $ref: '#/components/parameters/id'
+      description: >-
+        Update a task, using its `id` as a path parameter.
+
+        In the request body, update fields in a top-level `task` object. No
+        field is required, but you MUST send at least one field.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              type: object
+              properties:
+                task:
+                  $ref: '#/components/schemas/taskObject'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: '#/components/schemas/taskObject'
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+    delete:
+      tags:
+        - Tasks
+      summary: Delete task
+      operationId: delete-task
+      parameters:
+        - $ref: '#/components/parameters/id'
+      description: |-
+        **Be careful!** This action is irreversible.
+
+        Deletes a task, using the task's `id` in the path parameters.
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '404':
+          $ref: '#/components/responses/404'
+  /entity_templates:
+    get:
+      tags:
+        - Entity templates
+      summary: List entity templates
+      description: >-
+        Fetch some or all entity template records, using filters to fetch
+        subsets.
+
+        In addition to `limit` and `offset`, you can also pass any field in the
+        `entity_template` object as a query parameter.
+      operationId: list-entity_templates
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entity_templates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/entityObject'
+                  meta:
+                    $ref: '#/components/schemas/meta'
+  /entity_templates/{id}:
+    get:
+      tags:
+        - Entity templates
+      summary: Get template
+      description: Get a template, using its `id` as a path parameter
+      operationId: get-template
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entity_template:
+                    $ref: '#/components/schemas/entityObject'
+  /org_units:
+    get:
+      tags:
+        - Org units
+      summary: List org units
+      description: >-
+        Fetch some or all org unit records, using filters to fetch subsets.
+
+        In addition to `limit` and `offset`, you can also pass any field in the
+        `org_unit` object as a query parameter.
+      operationId: list-orgs
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  org_units:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/orgArray'
+                  meta:
+                    $ref: '#/components/schemas/meta'
+  /org_units/{id}:
+    get:
+      tags:
+        - Org units
+      summary: Get unit
+      description: Get an organization unit, using its `id` as a path parameter
+      operationId: get-org
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  org_unit:
+                    $ref: '#/components/schemas/orgObject'
+    delete:
+      tags:
+        - Org units
+      summary: Delete org
+      operationId: delete-org
+      parameters:
+        - $ref: '#/components/parameters/id'
+      description: |-
+        **Be careful!** This action is irreversible.
+
+        Deletes a org_unit, using the org's `id` in the path parameters.
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '404':
+          $ref: '#/components/responses/404'
+  /users:
+    get:
+      tags:
+        - Users
+      summary: List users
+      description: >-
+        Fetch some or all users, using filters to fetch subsets.
+
+        In addition to `limit` and `offset`, you can also pass any field in the
+        `user` object as a query parameter.
+      operationId: list-users
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+                  meta:
+                    $ref: '#/components/schemas/meta'
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      operationId: create-user
+      description: >-
+        Create a user, with name and login credentials. You can optionally add
+        your own `client_id`, and a `password` for first time logins.
+
+        A successul request returns the new user's Cascade `id`, along with
+        other user data.
+      parameters:
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/first_name'
+        - $ref: '#/components/parameters/last_name'
+        - $ref: '#/components/parameters/role_id'
+        - $ref: '#/components/parameters/username'
+        - $ref: '#/components/parameters/email'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                example:
+                  user:
+                    id: '25'
+                    client_id: U938168735
+                    username: robertsonr21
+                    is_enabled: 1
+                    is_locked: 0
+                    is_notified: 0
+                    is_restricted: 0
+                    is_archived: 0
+                    first_name: Rob
+                    last_name: Allen
+                    email: hello@example.com
+                    creation_time: '2021-12-09T23:28:32+00:00'
+                    last_login_ip: null
+                    last_login_time: null
+                    role_id: null
+                    current_appointment_id: null
+                    invitation_id: null
+                    appointment_ids: []
+                    appraisal_ids: []
+                    meeting_ids: []
+                    survey_campaign_ids: []
+                    survey_ids: []
+                    competency_assessment_ids: []
+                    dashboard_ids: []
+                    dashboard_configuration_ids: []
+                    links:
+                      events: /api/v2/users/25/events
+                      user_configs: /api/v2/users/25/user_configs
+                      scheduled_jobs: /api/v2/users/25/scheduled_jobs
+                      snapshots: /api/v2/users/25/snapshots
+                      job_applications: /api/v2/users/25/job_applications
+                      statistic: /api/v2/users/25/statistic
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/id'
+      summary: Get a user
+      description: Returns all information about the user, specified by the `id`
+      operationId: get-user
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+    put:
+      tags:
+        - Users
+      summary: Update user
+      operationId: update-user
+      description: >-
+        Update a user's, using its `id` as a path parameter.
+
+        In the request body, update fields in a top-level `user` object. No
+        field is required, but you MUST send at least one field.
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/user'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+  /roles:
+    get:
+      tags:
+        - Roles
+      summary: List roles
+      operationId: list-roles
+      description: Fetch some or all role records, using filters to fetch subsets.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/roleObject'
+    post:
+      tags:
+        - Roles
+      summary: Create a role
+      operationId: create-role
+      description: |-
+        Add a new role..
+        Request body MUST include the fields `task` and `goal_id`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  $ref: '#/components/schemas/roleCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+        '422':
+          $ref: '#/components/responses/422'
+  /roles/{id}:
+    get:
+      tags:
+        - Roles
+      summary: Get role
+      description: Get a role, using its `id` as a path parameter
+      operationId: get-role
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    $ref: '#/components/schemas/roleObject'
+    put:
+      tags:
+        - roles
+      summary: Update role
+      operationId: update-role
+      parameters:
+        - $ref: '#/components/parameters/id'
+      description: >-
+        Update an issue, using its `id` as a path parameter.
+
+        In the request body, update fields in a top-level `role` object. No
+        field is required, but you MUST send at least one field.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              type: object
+              properties:
+                role:
+                  $ref: '#/components/schemas/roleObject'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    $ref: '#/components/schemas/roleObject'
+        '404':
+          $ref: '#/components/responses/404'
+        '422':
+          $ref: '#/components/responses/422'
+    delete:
+      tags:
+        - Roles
+      summary: Delete role
+      operationId: delete-role
+      parameters:
+        - $ref: '#/components/parameters/id'
+      description: |-
+        **Be careful!** This action is irreversible.
+
+        Deletes a role, using the role's `id` in the path parameters.
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '404':
+          $ref: '#/components/responses/404'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >
+
+        Authorize your requests with a bearer token.
+
+
+        To get a token, log in to your Cascade instance, then go to **Profile >
+        Security**.
+
+
+        A request looks like this. Your token would go where the `<token>`
+        placeholder text is.
+
+
+
+        ```
+
+        curl --location --request GET
+        'https://csegeneral.executestrategy.net/api/v2/goals?id=1,2'
+
+        --header 'Authorization: Bearer <token>'
+
+        ```
+  parameters:
+    offset:
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        default: 1
+        example: 1
+      description: The offset for pagination.
+    limit:
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        example: 10
+      description: The number of items to return
+    role_id:
+      name: role_id
+      in: query
+      schema:
+        $ref: '#/components/schemas/role_id'
+    creator_id:
+      name: creator_id
+      in: query
+      schema:
+        $ref: '#/components/schemas/creator_id'
+    status:
+      name: status
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/status'
+    completion_criteria:
+      name: completion_criteria
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/completion_criteria'
+    target_flow:
+      name: target_flow
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/target_flow'
+    action:
+      name: action
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/action'
+    detail:
+      name: detail
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/details'
+    initial:
+      name: initial
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/initial'
+    threshold:
+      name: threshold
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/threshold'
+    progress:
+      name: progress
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/progress'
+    target:
+      name: target
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/target'
+    unit_id:
+      name: unit_id
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/unit_id'
+    start_time:
+      name: start_id
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/start_time'
+    end_time:
+      name: end_time
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/end_time'
+    weight_id:
+      name: weight_id
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/weight_id'
+    link:
+      name: link
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/links'
+    why_type:
+      name: why_type
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/why_type'
+    why:
+      name: why
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/why'
+    is_private:
+      name: is_private
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/is_private'
+    tracking_type:
+      name: tracking_type
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/tracking_type'
+    created_at:
+      name: created_at
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/created_at'
+    id:
+      in: path
+      name: id
+      schema:
+        $ref: '#/components/schemas/id'
+      required: true
+    first_name:
+      in: query
+      name: first_name
+      schema:
+        $ref: '#/components/schemas/first_name'
+    last_name:
+      in: query
+      name: last_name
+      schema:
+        $ref: '#/components/schemas/last_name'
+    username:
+      in: query
+      name: username
+      schema:
+        $ref: '#/components/schemas/username'
+    email:
+      in: query
+      name: email
+      schema:
+        $ref: '#/components/schemas/email'
+  schemas:
+    '401':
+      description: Unauthorized
+    '500':
+      description: InternalServerError
+    role_id:
+      type: integer
+      description: The ID of the role of the associated user or goal
+      example: 2
+    creator_id:
+      type: integer
+      description: The ID of the user who created the goal
+      example: 3
+      nullable: true
+      default: null
+    status:
+      type: string
+      description: Determines the state of the goal
+      enum:
+        - APPRO
+        - DRAFT
+        - ARCHI
+      default: DRAFT
+      example: DRAFT
+    completion_criteria:
+      type: string
+      description: |
+        Criteria to determine whether the goal is complete
+      enum:
+        - TARGET-REACHED
+        - TARGET-DEADLINE-REACHED
+      example: TARGET-DEADLINE-REACHED
+    target_flow:
+      type: string
+      description: >
+        The tracking direction of the goal. If `OVER`, higher values are better.
+        If `UNDER`, lower values are better.
+      enum:
+        - OVER
+        - UNDER
+        - NONE
+      example: NONE
+    action:
+      type: string
+      description: >-
+        The action to accomplish the goal, task, etc. In the Cascade UI,
+        `action` might also serve as the verb in the resource's title.
+      example: complete
+      maxLength: 25
+      nullable: true
+      default: null
+    details:
+      type: string
+      description: |
+        Description of what is implementing the action
+      maxLength: 300
+      default: null
+      nullable: true
+      example: All tasks by Q3
+    initial:
+      type: number
+      description: |
+        Initial progress of the goal
+      nullable: false
+      default: 0
+      example: 0
+    threshold:
+      type: number
+      description: |
+        Allowed
+      nullable: true
+      default: null
+      example: null
+    progress:
+      type: number
+      description: |
+        Current progress of the goal
+      example: 68.5
+    target:
+      type: number
+      description: |
+        Expected target of the goal
+      example: 101
+    unit_id:
+      type: integer
+      description: >-
+        What unit the goal uses for tracking
+
+        `1` measures in percent; `2`, in arbitrary units; `3`, in money; `4`, in
+        people.
+      example: 1
+      minimum: 1
+      maximum: 4
+    start_time:
+      oneOf:
+        - type: string
+        - type: integer
+      description: >
+        Intended start time of the goal, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2021-11-15T21:45:44+00:00'
+    end_time:
+      type: string
+      description: >
+        Expected end time of the goal, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2022-01-15T21:45:44+00:00'
+    weight_id:
+      type: integer
+      example: 2
+      description: |
+        The weight of a resources's priority.
+        The highest priority is `1`. The lowest is `4`.
+      minimum: 1
+      maximum: 4
+    links:
+      type: object
+      description: |
+        URIs that link to related resources
+    why_type:
+      type: string
+      description: |
+        Describes the type of extra detail provided
+      enum:
+        - VIDEO
+        - RHTML
+        - NONE
+      default: NONE
+    why:
+      type: string
+      nullable: true
+      description: |
+        Extra detail about the goal, in the form of its `why_type`
+      default: null
+      example: null
+    is_private:
+      oneOf:
+        - type: number
+        - type: boolean
+      description: |
+        Whether the resource is private
+      example: 0
+    tracking_type:
+      type: string
+      description: |
+        Tracking schema used to track the goal
+      enum:
+        - MANUAL
+        - SUBGOAL-SUM
+        - SUBGOAL-MEAN
+        - WEIGHTED-MEAN
+        - TASKS
+      default: MANUAL
+      example: MANUAL
+      nullable: false
+    created_at:
+      oneOf:
+        - type: integer
+        - type: string
+      description: >
+        Date when the resource was created, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2021-11-26T17:43:08+00:00'
+    id:
+      description: >
+        The ID of the resource. For example, an `id` is attached to each goal
+        and user in your Cascade instance.
+      type: integer
+      example: 12
+    allocated_time:
+      type: number
+      example: 0
+    image:
+      type: string
+      format: binary
+      default: null
+      example: null
+      nullable: true
+    customAttributes:
+      type: object
+      description: An object that contains custom keys and values
+      additionalProperties: true
+      example:
+        YOURCUSTOMFIELDID: Field Value
+        ANOTHERCUSTOMFIELDID: Secondary
+    entity_template_id:
+      type: integer
+      description: ID of associated entity template
+      example: 12
+      default: null
+      nullable: true
+    settings:
+      type: string
+      format: binary
+      description: Maximum 16 MiB
+      default: null
+      example: '{"row":"0","col":"0","width":"3","height":"1"}'
+      nullable: true
+    title:
+      type: string
+      description: The name of the resource in the Cascade UI.
+      maxLength: 100
+      nullable: false
+    pending_edit_id:
+      type: number
+      default: null
+      example: null
+      nullable: true
+    pending_delete_id:
+      type: number
+      default: null
+      example: null
+      nullable: true
+    pending_completion_id:
+      type: number
+      default: null
+      example: null
+      nullable: true
+    direct_focus_area_ids:
+      type: array
+      items:
+        type: number
+      example:
+        - 1
+        - 2
+    inherited_focus_area_ids:
+      type: array
+      items:
+        type: number
+    aligned_from_ids:
+      type: array
+    aligned_to_ids:
+      type: array
+    ancestor_ids:
+      type: array
+    goal_id:
+      type: integer
+      description: the ID of the associated goal
+      example: 15
+    collaborators:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/id'
+          goal_id:
+            $ref: '#/components/schemas/goal_id'
+          role_id:
+            $ref: '#/components/schemas/role_id'
+    end_date:
+      type: string
+      description: >
+        Intended end date of the task, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2021-12-29T20:43:08+00:00'
+    updated_at:
+      oneOf:
+        - type: integer
+        - type: string
+      type: string
+      description: >
+        Date when the resource was last updated, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2021-11-29T20:43:08+00:00'
+    milestoneObject:
+      type: object
+      description: A milestone object
+      properties:
+        id:
+          type: integer
+          description: the milestone id
+          example: 2
+        goal_id:
+          $ref: '#/components/schemas/goal_id'
+        end_date:
+          $ref: '#/components/schemas/end_date'
+        target:
+          type: number
+          description: |
+            Expected milestone of the goal
+          example: 33.3
+        label:
+          type: string
+          maxLength: 25
+          description: Mileston label in UI
+          example: Week 5
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+    milestoneArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/milestoneObject'
+    goal_type_ids:
+      type: array
+      example:
+        - 1
+        - 2
+      items:
+        type: number
+    update_ids:
+      type: array
+      items:
+        type: number
+      description: associated updates
+      example:
+        - 1
+        - 23
+        - 56
+    issue_ids:
+      type: array
+      items:
+        type: number
+      description: associated issues
+      example:
+        - 3
+        - 4
+    task_ids:
+      type: array
+      description: associated tasks
+      items:
+        type: number
+      example:
+        - 12
+        - 13
+        - 14
+    goalObject:
+      description: A goal object
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        role_id:
+          $ref: '#/components/schemas/role_id'
+        creator_id:
+          $ref: '#/components/schemas/creator_id'
+        status:
+          $ref: '#/components/schemas/status'
+        completion_criteria:
+          $ref: '#/components/schemas/completion_criteria'
+        target_flow:
+          $ref: '#/components/schemas/target_flow'
+        action:
+          $ref: '#/components/schemas/action'
+        details:
+          $ref: '#/components/schemas/details'
+        initial:
+          $ref: '#/components/schemas/initial'
+        threshold:
+          $ref: '#/components/schemas/threshold'
+        progress:
+          $ref: '#/components/schemas/progress'
+        target:
+          $ref: '#/components/schemas/target'
+        allocated_time:
+          $ref: '#/components/schemas/allocated_time'
+        unit_id:
+          $ref: '#/components/schemas/unit_id'
+        start_time:
+          $ref: '#/components/schemas/start_time'
+        end_time:
+          $ref: '#/components/schemas/end_time'
+        weight_id:
+          $ref: '#/components/schemas/weight_id'
+        link:
+          $ref: '#/components/schemas/why_type'
+        why_type:
+          $ref: '#/components/schemas/why_type'
+        why:
+          $ref: '#/components/schemas/why'
+        is_private:
+          $ref: '#/components/schemas/is_private'
+        tracking_type:
+          $ref: '#/components/schemas/tracking_type'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/created_at'
+        image:
+          $ref: '#/components/schemas/image'
+        custom_attributes:
+          $ref: '#/components/schemas/customAttributes'
+        entity_template_id:
+          $ref: '#/components/schemas/entity_template_id'
+        settings:
+          $ref: '#/components/schemas/settings'
+        title:
+          $ref: '#/components/schemas/title'
+        pending_edit_id:
+          $ref: '#/components/schemas/pending_edit_id'
+        pending_delete_id:
+          $ref: '#/components/schemas/pending_delete_id'
+        pending_completion_id:
+          $ref: '#/components/schemas/pending_completion_id'
+        direct_focus_area_ids:
+          $ref: '#/components/schemas/direct_focus_area_ids'
+        inherited_focus_area_ids:
+          $ref: '#/components/schemas/inherited_focus_area_ids'
+        aligned_from_ids:
+          $ref: '#/components/schemas/aligned_from_ids'
+        aligned_to_ids:
+          $ref: '#/components/schemas/aligned_to_ids'
+        ancestor_ids:
+          $ref: '#/components/schemas/ancestor_ids'
+        collaborators:
+          $ref: '#/components/schemas/collaborators'
+        milestones:
+          $ref: '#/components/schemas/milestoneArray'
+        goal_type_ids:
+          $ref: '#/components/schemas/goal_type_ids'
+        update_ids:
+          $ref: '#/components/schemas/update_ids'
+        issue_ids:
+          $ref: '#/components/schemas/issue_ids'
+        task_ids:
+          $ref: '#/components/schemas/task_ids'
+    goalArray:
+      description: An array of goals
+      type: array
+      items:
+        $ref: '#/components/schemas/goalObject'
+    meta:
+      type: object
+      description: meta-data about the response
+      properties:
+        total:
+          type: integer
+          description: The total number of resources returned available with these filters
+      example:
+        total: 45
+    link:
+      type: string
+      default: null
+      example: null
+      nullable: true
+    goalCreate:
+      description: The object to create a goal
+      required:
+        - action
+        - details
+        - weight_id
+        - start_time
+        - end_time
+      properties:
+        action:
+          $ref: '#/components/schemas/action'
+        details:
+          $ref: '#/components/schemas/details'
+        weight_id:
+          $ref: '#/components/schemas/weight_id'
+        start_time:
+          $ref: '#/components/schemas/start_time'
+        end_time:
+          $ref: '#/components/schemas/end_time'
+        role_id:
+          $ref: '#/components/schemas/role_id'
+        creator_id:
+          $ref: '#/components/schemas/creator_id'
+        initial:
+          $ref: '#/components/schemas/initial'
+        status:
+          $ref: '#/components/schemas/status'
+        threshold:
+          $ref: '#/components/schemas/threshold'
+        completion_criteria:
+          $ref: '#/components/schemas/completion_criteria'
+        target:
+          $ref: '#/components/schemas/target'
+        target_flow:
+          $ref: '#/components/schemas/target_flow'
+        progress:
+          $ref: '#/components/schemas/progress'
+        unit_id:
+          $ref: '#/components/schemas/unit_id'
+        link:
+          $ref: '#/components/schemas/link'
+        why_type:
+          $ref: '#/components/schemas/why_type'
+        why:
+          $ref: '#/components/schemas/why'
+        is_private:
+          $ref: '#/components/schemas/is_private'
+        tracking_type:
+          $ref: '#/components/schemas/tracking_type'
+        custom_attributes:
+          $ref: '#/components/schemas/customAttributes'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/created_at'
+    issue:
+      type: string
+      description: Issue's name in the UI
+      example: Getting over budget
+    comment:
+      type: string
+      description: A comment's text
+      example: I agree.
+    is_critical:
+      oneOf:
+        - type: number
+        - type: boolean
+      example: 0
+    is_resolved:
+      oneOf:
+        - type: number
+        - type: boolean
+      type: number
+      example: 0
+    user_id:
+      type: integer
+      description: The user associated with the resource
+      example: 1
+    thread_id:
+      type: number
+      example: 82
+      description: ID of the thread
+    file_id:
+      type: integer
+      example: 12
+      nullable: true
+      description: ID of file
+    due_date:
+      oneOf:
+        - type: integer
+        - type: string
+      description: >
+        Intended due date of the task, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2021-12-29T20:43:08+00:00'
+    customIssueAttributes:
+      description: |-
+        Custom Attributes for Issues (a.k.a risks). There are four fields:
+
+         - `CA1573011281053`: Likelihood
+         - `CA1573011296755`: Consequence
+         - `CA1573011364578`: Risk Score Value
+         - `CA1573011427674`: Risk Score
+
+        You can configure values for `likelihood` and `consequence`.
+
+        Cascade supplies values for `Risk Score` and `Risk Score Value`.
+      type: object
+      properties:
+        CA1573011281053:
+          description: The Likelihood score
+          type: integer
+          example: 4
+          minimum: 1
+          maximum: 5
+        CA1573011296755:
+          description: The consequence score
+          type: integer
+          example: 4
+          minimum: 1
+          maximum: 5
+        CA1573011427674:
+          description: Risk score, calculated in Cascade
+        CA1573011364578:
+          description: Risk score value, calculated in Cascade
+      example:
+        CA1573011427674: null
+        CA1573011281053: 5
+        CA1573011296755: 4
+        CA1573011364578: null
+    is_locked:
+      oneOf:
+        - type: number
+        - type: boolean
+    commentArray:
+      type: array
+      description: the associated comments
+      items:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/id'
+          created_at:
+            $ref: '#/components/schemas/created_at'
+          comment:
+            $ref: '#/components/schemas/comment'
+          user_id:
+            $ref: '#/components/schemas/user_id'
+          thread_id:
+            $ref: '#/components/schemas/thread_id'
+          has_history:
+            type: boolean
+            example: true
+          links:
+            $ref: '#/components/schemas/links'
+    thread:
+      type: object
+      description: Thread text and metadata
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+        is_locked:
+          $ref: '#/components/schemas/is_locked'
+        comments:
+          $ref: '#/components/schemas/commentArray'
+    issueObject:
+      type: object
+      description: An issue object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        issue:
+          $ref: '#/components/schemas/issue'
+        comment:
+          $ref: '#/components/schemas/comment'
+        is_critical:
+          $ref: '#/components/schemas/is_critical'
+        is_resolved:
+          $ref: '#/components/schemas/is_resolved'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        goal_id:
+          $ref: '#/components/schemas/goal_id'
+        role_id:
+          $ref: '#/components/schemas/role_id'
+        thread_id:
+          $ref: '#/components/schemas/thread_id'
+        file_id:
+          $ref: '#/components/schemas/file_id'
+        due_date:
+          $ref: '#/components/schemas/due_date'
+        entity_template_id:
+          $ref: '#/components/schemas/entity_template_id'
+        custom_attributes:
+          $ref: '#/components/schemas/customIssueAttributes'
+        thread:
+          $ref: '#/components/schemas/thread'
+    issueCreate:
+      type: object
+      description: Request body to create an issue
+      properties:
+        issue:
+          $ref: '#/components/schemas/issue'
+        comment:
+          $ref: '#/components/schemas/comment'
+        is_critical:
+          $ref: '#/components/schemas/is_critical'
+        is_resolved:
+          $ref: '#/components/schemas/is_resolved'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        goal_id:
+          $ref: '#/components/schemas/goal_id'
+        role_id:
+          $ref: '#/components/schemas/role_id'
+        thread_id:
+          $ref: '#/components/schemas/thread_id'
+        file_id:
+          $ref: '#/components/schemas/file_id'
+        due_date:
+          $ref: '#/components/schemas/due_date'
+        entity_template_id:
+          $ref: '#/components/schemas/entity_template_id'
+        custom_attributes:
+          $ref: '#/components/schemas/customAttributes'
+      required:
+        - goal_id
+        - issue
+    deleted:
+      type: integer
+      minimum: 0
+      maximum: 1
+      example: 0
+    has_history:
+      type: boolean
+      example: true
+    updateObject:
+      type: object
+      description: An update object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        comment:
+          $ref: '#/components/schemas/comment'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        goal_id:
+          $ref: '#/components/schemas/goal_id'
+        thread_id:
+          $ref: '#/components/schemas/thread_id'
+        file_id:
+          $ref: '#/components/schemas/file_id'
+        custom_attributes:
+          $ref: '#/components/schemas/customAttributes'
+        deleted:
+          $ref: '#/components/schemas/deleted'
+        entity_template_id:
+          $ref: '#/components/schemas/entity_template_id'
+        has_history:
+          $ref: '#/components/schemas/has_history'
+        thread:
+          $ref: '#/components/schemas/thread'
+        links:
+          $ref: '#/components/schemas/links'
+    updateArray:
+      type: array
+      description: An array of update objects
+      items:
+        $ref: '#/components/schemas/updateObject'
+    updateCreate:
+      type: object
+      description: Request body to create an update
+      required:
+        - goal_id
+      properties:
+        comment:
+          $ref: '#/components/schemas/comment'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        goal_id:
+          $ref: '#/components/schemas/goal_id'
+        thread_id:
+          $ref: '#/components/schemas/thread_id'
+        file_id:
+          $ref: '#/components/schemas/file_id'
+        custom_attributes:
+          $ref: '#/components/schemas/customAttributes'
+    taskDescription:
+      type: string
+      description: The task's title in the UI.
+      example: rewrite
+    completed_at:
+      oneOf:
+        - type: integer
+        - type: string
+      type: string
+      description: >
+        Date when the resource was completed, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2021-12-29T00:00:08+00:00'
+    start_date:
+      oneOf:
+        - type: integer
+        - type: string
+      description: >
+        Intended start date of the task, in [Unix
+        time](https://en.wikipedia.org/wiki/Unix_time) or [ISO 8601
+        format](https://en.wikipedia.org/wiki/ISO_8601)
+      example: '2021-11-29T20:43:08+00:00'
+    taskObject:
+      type: object
+      description: A task object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        task:
+          $ref: '#/components/schemas/taskDescription'
+        comment:
+          $ref: '#/components/schemas/comment'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        is_complete:
+          type: number
+          description: whether the task is complete
+        completed_at:
+          $ref: '#/components/schemas/completed_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        role_id:
+          $ref: '#/components/schemas/role_id'
+        completed_user_id:
+          type: integer
+          description: ID of user who marked this task complete
+          example: 2
+        goal_id:
+          $ref: '#/components/schemas/goal_id'
+        thread_id:
+          $ref: '#/components/schemas/thread_id'
+        file_id:
+          $ref: '#/components/schemas/file_id'
+        start_date:
+          $ref: '#/components/schemas/start_date'
+        due_date:
+          $ref: '#/components/schemas/due_date'
+        weight_id:
+          $ref: '#/components/schemas/weight_id'
+        entity_template_id:
+          $ref: '#/components/schemas/entity_template_id'
+        custom_attributes:
+          $ref: '#/components/schemas/customAttributes'
+        thread:
+          $ref: '#/components/schemas/thread'
+    taskArray:
+      type: array
+      description: An array of tasks
+      items:
+        $ref: '#/components/schemas/taskObject'
+    is_complete:
+      oneOf:
+        - type: boolean
+        - type: integer
+      example: true
+    taskCreate:
+      type: object
+      description: Object to create a task.
+      properties:
+        task:
+          $ref: '#/components/schemas/taskDescription'
+        comment:
+          $ref: '#/components/schemas/comment'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        is_complete:
+          $ref: '#/components/schemas/is_complete'
+        completed_at:
+          $ref: '#/components/schemas/completed_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        role_id:
+          $ref: '#/components/schemas/role_id'
+        completed_user_id:
+          type: integer
+          description: ID of user who marked this task complete
+          example: 2
+        goal_id:
+          $ref: '#/components/schemas/goal_id'
+        thread_id:
+          $ref: '#/components/schemas/thread_id'
+        file_id:
+          $ref: '#/components/schemas/file_id'
+        start_date:
+          $ref: '#/components/schemas/start_date'
+        due_date:
+          $ref: '#/components/schemas/due_date'
+        weight_id:
+          $ref: '#/components/schemas/weight_id'
+        entity_template_id:
+          $ref: '#/components/schemas/entity_template_id'
+        custom_attributes:
+          $ref: '#/components/schemas/customAttributes'
+      required:
+        - goal_id
+        - task
+    entity_type:
+      type: string
+      example: update
+    is_enabled:
+      oneOf:
+        - type: number
+        - type: boolean
+      example: true
+      minimum: 0
+      maximum: 1
+    is_archived:
+      oneOf:
+        - type: number
+        - type: boolean
+      example: 0
+      minimum: 0
+      maximum: 1
+    modified_by_id:
+      description: User who modified this resource
+      type: number
+      default: null
+      nullable: true
+    parent_id:
+      type: integer
+      description: ID of resource's parent
+      example: 2
+    reference:
+      type: string
+      example: CA1573011427674
+    label:
+      type: string
+      example: residential
+    attribute:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        reference:
+          $ref: '#/components/schemas/reference'
+        label:
+          $ref: '#/components/schemas/label'
+        data_type:
+          type: string
+          example: data_set
+        appearance:
+          type: string
+          example: dropdown
+        settings:
+          $ref: '#/components/schemas/settings'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+    entity_template_attributes:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        entity_template_id:
+          $ref: '#/components/schemas/parent_id'
+        settings:
+          $ref: '#/components/schemas/settings'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+        attribute:
+          $ref: '#/components/schemas/attribute'
+    entityObject:
+      type: object
+      description: An `entity_template` object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        name:
+          description: Name of this entity_template
+          type: string
+          example: Example name
+        description:
+          description: A description of the template
+          type: string
+          example: A dropdown
+        settings:
+          $ref: '#/components/schemas/settings'
+        entity_type:
+          $ref: '#/components/schemas/entity_type'
+        is_enabled:
+          $ref: '#/components/schemas/is_enabled'
+        is_archived:
+          $ref: '#/components/schemas/is_archived'
+        created_at:
+          $ref: '#/components/schemas/created_at'
+        updated_at:
+          $ref: '#/components/schemas/updated_at'
+        modified_by_id:
+          $ref: '#/components/schemas/modified_by_id'
+        entity_template_attributes:
+          $ref: '#/components/schemas/entity_template_attributes'
+    client_id:
+      type: string
+      description: The unique ID of the resource in your system, e.g. user ID, or role ID.
+      example: U8132B5E78
+      maxLength: 10
+    org_unit:
+      type: string
+      maxLength: 50
+      example: Operations
+      description: The name of the organization unit
+      default: null
+      nullable: true
+    lft:
+      type: number
+      example: 3
+    rgt:
+      type: number
+      example: 6
+    colour:
+      type: string
+      maxLength: 7
+      example: null
+      default: null
+      nullable: true
+    org_unit_ids:
+      type: array
+      items:
+        type: integer
+      example:
+        - 12
+        - 13
+    level:
+      type: integer
+      minimum: 0
+      example: 2
+      description: The resources permission or organization level
+    orgObject:
+      type: object
+      description: an org_unit object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        client_id:
+          $ref: '#/components/schemas/client_id'
+        org_unit:
+          $ref: '#/components/schemas/org_unit'
+        lft:
+          $ref: '#/components/schemas/lft'
+        rgt:
+          $ref: '#/components/schemas/rgt'
+        parent_id:
+          $ref: '#/components/schemas/parent_id'
+        colour:
+          $ref: '#/components/schemas/colour'
+        org_unit_ids:
+          $ref: '#/components/schemas/org_unit_ids'
+        plan_ids:
+          $ref: '#/components/schemas/org_unit_ids'
+        level:
+          $ref: '#/components/schemas/level'
+        is_enabled:
+          $ref: '#/components/schemas/is_enabled'
+    orgArray:
+      type: array
+      description: Array of objects
+      items:
+        $ref: '#/components/schemas/orgObject'
+    username:
+      type: string
+      description: The user's name when they log in
+      example: Sofia@example.com
+    email:
+      type: string
+      description: A user's email
+      example: boballen@example.com
+    first_name:
+      type: string
+      description: A user's first name
+      example: Roberta
+    last_name:
+      type: string
+      description: A user's last name
+      example: Allen
+    user:
+      type: object
+      description: Information about a user in your Cascade instance
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        client_id:
+          $ref: '#/components/schemas/client_id'
+        username:
+          $ref: '#/components/schemas/username'
+        email:
+          $ref: '#/components/schemas/email'
+        first_name:
+          $ref: '#/components/schemas/first_name'
+        last_name:
+          $ref: '#/components/schemas/last_name'
+        role_id:
+          $ref: '#/components/schemas/role_id'
+      example:
+        user:
+          id: 5
+          client_id: U0F53915B7
+          username: Eriberto_Blanda67@example.net
+          is_enabled: 0
+          is_locked: 0
+          is_notified: 0
+          is_restricted: 0
+          is_archived: 0
+          first_name: Kristoffer
+          last_name: Tester 4
+          email: Tressie_Jacobi16@example.com
+          creation_time: '2021-11-26T18:25:15+00:00'
+          last_login_ip: null
+          last_login_time: null
+          role_id: null
+          current_appointment_id: null
+          invitation_id: null
+          appointment_ids: []
+          appraisal_ids: []
+          meeting_ids: []
+          survey_campaign_ids: []
+          survey_ids: []
+          competency_assessment_ids: []
+          dashboard_ids: []
+          dashboard_configuration_ids: []
+          links:
+            events: /api/v2/users/5/events
+            user_configs: /api/v2/users/5/user_configs
+            scheduled_jobs: /api/v2/users/5/scheduled_jobs
+            snapshots: /api/v2/users/5/snapshots
+            job_applications: /api/v2/users/5/job_applications
+            statistic: /api/v2/users/5/statistic
+    userCreate:
+      type: object
+      description: A request object to create a user.
+      required:
+        - username
+        - email
+        - first_name
+        - last_name
+      properties:
+        user:
+          type: object
+          description: Top-level object that holds user data
+          properties:
+            client_id:
+              $ref: '#/components/schemas/client_id'
+            username:
+              $ref: '#/components/schemas/username'
+            email:
+              $ref: '#/components/schemas/email'
+            first_name:
+              $ref: '#/components/schemas/first_name'
+            last_name:
+              $ref: '#/components/schemas/last_name'
+            password:
+              type: string
+              description: An optional password for the user's first login
+              example: PleaseMakeYourPasswordsLong
+    employment_type:
+      type: string
+      description: Category of employment
+      enum:
+        - FTIME
+        - PTIME
+        - VOLUN
+        - CASUA
+        - CONTR
+      maxLength: 10
+    roleObject:
+      description: A role object
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        client_id:
+          $ref: '#/components/schemas/client_id'
+        title:
+          $ref: '#/components/schemas/title'
+        employment_type:
+          $ref: '#/components/schemas/employment_type'
+        lft:
+          $ref: '#/components/schemas/lft'
+        rgt:
+          $ref: '#/components/schemas/rgt'
+        parent_id:
+          $ref: '#/components/schemas/parent_id'
+        role_family_id:
+          type: integer
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        current_appointment_id:
+          type: integer
+        level:
+          $ref: '#/components/schemas/level'
+        role_ids:
+          type: array
+          items:
+            type: integer
+        privilege_ids:
+          type: array
+          description: The permissions the role has
+          items:
+            type: integer
+        links:
+          $ref: '#/components/schemas/links'
+      example:
+        role:
+          id: 2
+          client_id: R0001
+          org_unit_id: 2
+          title: CFO
+          employment_type: null
+          lft: 2
+          rgt: 7
+          parent_id: 1
+          role_family_id: 1
+          user_id: 1
+          current_appointment_id: 4
+          level: 1
+          role_ids:
+            - 3
+            - 4
+          privilege_ids:
+            - 1
+            - 2
+            - 5
+            - 3
+            - 4
+            - 6
+          links:
+            immediate_roles: /api/v2/roles/2/immediate_roles
+            goals: /api/v2/roles/2/goals
+            collaborations: /api/v2/roles/2/collaborations
+            goal_watchers: /api/v2/roles/2/goal_watchers
+            notifications: /api/v2/roles/2/notifications
+            appointments: /api/v2/roles/2/appointments
+            assigned_tasks: /api/v2/roles/2/assigned_tasks
+    roleCreate:
+      type: object
+      description: An object to create roles
+      required:
+        - client_id
+        - title
+        - org_unit_id
+        - role_family_id
+      properties:
+        client_id:
+          $ref: '#/components/schemas/client_id'
+        title:
+          $ref: '#/components/schemas/title'
+        org_unit_id:
+          description: ID of associated `org_unit`
+          type: number
+        role_family_id:
+          description: ID of associated `role_family_id`
+        parent_id:
+          $ref: '#/components/schemas/parent_id'
+        employment_type:
+          $ref: '#/components/schemas/employment_type'
+      example:
+        role:
+          client_id: R0005
+          title: A new role
+          org_unit_id: 2
+          role_family_id: 1
+          employment_type: PTIME
+          parent_id: 2
+  responses:
+    '201':
+      description: Created
+    '204':
+      description: No content
+    '404':
+      description: Resource not found
+    '422':
+      description: Unprocessable entity
+      content:
+        application/json:
+          schema:
+            example:
+              errors:
+                field:
+                  - field can not be blank
+              status: Unprocessable
+security:
+  - bearerAuth: []

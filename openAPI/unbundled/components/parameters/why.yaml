@@ -1,0 +1,5 @@
+name: why
+in: query
+required: false
+schema:
+  $ref: ../schemas/why.yaml

@@ -1,0 +1,70 @@
+get:
+  tags:
+    - Tasks
+  summary: Get Task
+  description: 'Get a task, using its `id` as a path parameter'
+  operationId: get-task
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              task:
+                $ref: ../components/schemas/taskObject.yaml
+put:
+  tags:
+    - Tasks
+  summary: Update task
+  operationId: update-task
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  description: >-
+    Update a task, using its `id` as a path parameter.
+
+    In the request body, update fields in a top-level `task` object. No field is
+    required, but you MUST send at least one field.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - id
+          type: object
+          properties:
+            task:
+              $ref: ../components/schemas/taskObject.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              task:
+                $ref: ../components/schemas/taskObject.yaml
+    '404':
+      $ref: ../components/responses/404.yaml
+    '422':
+      $ref: ../components/responses/422.yaml
+delete:
+  tags:
+    - Tasks
+  summary: Delete task
+  operationId: delete-task
+  parameters:
+    - $ref: ../components/parameters/id.yaml
+  description: |-
+    **Be careful!** This action is irreversible.
+
+    Deletes a task, using the task's `id` in the path parameters.
+  responses:
+    '204':
+      $ref: ../components/responses/204.yaml
+    '404':
+      $ref: ../components/responses/404.yaml

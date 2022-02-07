@@ -1,0 +1,4 @@
+name: role_id
+in: query
+schema:
+  $ref: ../schemas/role_id.yaml

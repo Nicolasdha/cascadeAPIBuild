@@ -1,0 +1,5 @@
+name: end_time
+in: query
+required: false
+schema:
+  $ref: ../schemas/end_time.yaml

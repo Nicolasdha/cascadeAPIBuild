@@ -1,0 +1,10 @@
+description: Bad syntax. or impossible to satisfy.
+content:
+  application/json:
+    schema:
+      example:
+        message: >-
+          The request had bad syntax or was inherently impossible to be
+          satisfied.
+        code: 400
+        status: Bad Request

@@ -1,0 +1,4 @@
+name: creator_id
+in: query
+schema:
+  $ref: ../schemas/creator_id.yaml

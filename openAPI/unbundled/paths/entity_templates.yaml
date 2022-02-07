@@ -1,0 +1,27 @@
+get:
+  tags:
+    - Entity templates
+  summary: List entity templates
+  description: >-
+    Fetch some or all entity template records, using filters to fetch subsets.
+
+    In addition to `limit` and `offset`, you can also pass any field in the
+    `entity_template` object as a query parameter.
+  operationId: list-entity_templates
+  parameters:
+    - $ref: ../components/parameters/limit.yaml
+    - $ref: ../components/parameters/offset.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              entity_templates:
+                type: array
+                items:
+                  $ref: ../components/schemas/entityObject.yaml
+              meta:
+                $ref: ../components/schemas/meta.yaml

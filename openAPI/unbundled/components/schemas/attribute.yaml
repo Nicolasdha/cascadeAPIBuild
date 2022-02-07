@@ -1,0 +1,20 @@
+type: object
+properties:
+  id:
+    $ref: ./id.yaml
+  reference:
+    $ref: ./reference.yaml
+  label:
+    $ref: ./label.yaml
+  data_type:
+    type: string
+    example: data_set
+  appearance:
+    type: string
+    example: dropdown
+  settings:
+    $ref: ./settings.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  updated_at:
+    $ref: ./updated_at.yaml

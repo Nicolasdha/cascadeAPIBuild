@@ -1,0 +1,6 @@
+type: object
+description: An object that contains custom keys and values
+additionalProperties: true
+example:
+  YOURCUSTOMFIELDID: Field Value
+  ANOTHERCUSTOMFIELDID: Secondary

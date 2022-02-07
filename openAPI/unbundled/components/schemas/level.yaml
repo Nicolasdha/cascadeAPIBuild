@@ -1,0 +1,4 @@
+type: integer
+minimum: 0
+example: 2
+description: The resources permission or organization level

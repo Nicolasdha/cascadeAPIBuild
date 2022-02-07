@@ -1,0 +1,9 @@
+description: Unprocessable entity
+content:
+  application/json:
+    schema:
+      example:
+        errors:
+          field:
+            - field can not be blank
+        status: Unprocessable

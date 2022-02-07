@@ -1,0 +1,6 @@
+oneOf:
+  - type: number
+  - type: boolean
+description: |
+  Whether the resource is private
+example: 0

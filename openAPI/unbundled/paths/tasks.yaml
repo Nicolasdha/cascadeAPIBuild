@@ -1,0 +1,49 @@
+get:
+  tags:
+    - Tasks
+  summary: List tasks
+  description: >-
+    Fetch some or all task records, using filters to fetch subsets.
+
+    In addition to `limit` and `offset`, you can also pass any field in the
+    `task` object as a query parameter.
+  operationId: list-tasks
+  parameters:
+    - $ref: ../components/parameters/limit.yaml
+    - $ref: ../components/parameters/offset.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tasks:
+                type: array
+                items:
+                  $ref: ../components/schemas/taskArray.yaml
+              meta:
+                $ref: ../components/schemas/meta.yaml
+post:
+  tags:
+    - Tasks
+  summary: Create a task
+  operationId: create-task
+  description: |-
+    Add a new task to a goal.
+    Request body MUST include the fields `task` and `goal_id`.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            task:
+              $ref: ../components/schemas/taskCreate.yaml
+  responses:
+    '201':
+      $ref: ../components/responses/201.yaml
+    '422':
+      $ref: ../components/responses/422.yaml

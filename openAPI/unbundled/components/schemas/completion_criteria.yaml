@@ -1,0 +1,7 @@
+type: string
+description: |
+  Criteria to determine whether the goal is complete
+enum:
+  - TARGET-REACHED
+  - TARGET-DEADLINE-REACHED
+example: TARGET-DEADLINE-REACHED

@@ -1,0 +1,68 @@
+post:
+  tags:
+    - Goals
+  operationId: create-milestone
+  summary: Create a milestone
+  description: |-
+    Add a new milestone to a goal.
+  parameters:
+    - id:
+      in: path
+      name: id
+      schema:
+        description: >
+          The ID of goal you want to add a milestone to.
+        type: integer
+        example: 12
+      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            milestones:
+              $ref: ../components/schemas/milestoneArray.yaml
+          example:
+            milestones:
+                - id: '6'
+                  end_date: '2021-10-19 02:59:59'
+                  target: 1
+                  forecast: 0
+                  label: Week 1
+                  goal_id: '15'
+                - id: '7'
+                  end_date: '2021-10-26 02:59:59'
+                  target: 10
+                  forecast: 0
+                  label: Week 2
+                  goal_id: 15
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              milestones:
+                type: array
+                items:
+                  $ref: ../components/schemas/milestoneObject.yaml
+            example:
+              milestones:
+                - id: '6'
+                  end_date: '2021-10-19 02:59:59'
+                  target: 1
+                  forecast: 0
+                  label: Week 1
+                  goal_id: '15'
+                - id: '7'
+                  end_date: '2021-10-26 02:59:59'
+                  target: 10
+                  forecast: 0
+                  label: Week 2
+                  goal_id: 15
+    '422':
+      $ref: ../components/responses/422.yaml

@@ -1,0 +1,5 @@
+name: initial
+in: query
+required: false
+schema:
+  $ref: ../schemas/initial.yaml

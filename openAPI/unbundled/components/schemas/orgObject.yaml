@@ -1,0 +1,25 @@
+type: object
+description: an org_unit object
+properties:
+  id:
+    $ref: ./id.yaml
+  client_id:
+    $ref: ./client_id.yaml
+  org_unit:
+    $ref: ./org_unit.yaml
+  lft:
+    $ref: ./lft.yaml
+  rgt:
+    $ref: ./rgt.yaml
+  parent_id:
+    $ref: ./parent_id.yaml
+  colour:
+    $ref: ./colour.yaml
+  org_unit_ids:
+    $ref: ./org_unit_ids.yaml
+  plan_ids:
+    $ref: ./org_unit_ids.yaml
+  level:
+    $ref: ./level.yaml
+  is_enabled:
+    $ref: ./is_enabled.yaml

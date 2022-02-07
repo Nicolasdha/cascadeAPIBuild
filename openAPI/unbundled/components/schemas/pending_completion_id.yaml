@@ -1,0 +1,4 @@
+type: number
+default: null
+example: null
+nullable: true

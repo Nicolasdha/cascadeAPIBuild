@@ -1,0 +1,5 @@
+description: >
+  The ID of the resource. For example, an `id` is attached to each goal and user
+  in your Cascade instance.
+type: integer
+example: 12

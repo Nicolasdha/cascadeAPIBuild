@@ -1,0 +1,4 @@
+in: query
+name: email
+schema:
+  $ref: ../schemas/email.yaml

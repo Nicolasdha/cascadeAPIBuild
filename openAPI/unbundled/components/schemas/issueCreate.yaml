@@ -1,0 +1,32 @@
+type: object
+description: Request body to create an issue
+properties:
+  issue:
+    $ref: ./issue.yaml
+  comment:
+    $ref: ./comment.yaml
+  is_critical:
+    $ref: ./is_critical.yaml
+  is_resolved:
+    $ref: ./is_resolved.yaml
+  created_at:
+    $ref: ./created_at.yaml
+  user_id:
+    $ref: ./user_id.yaml
+  goal_id:
+    $ref: ./goal_id.yaml
+  role_id:
+    $ref: ./role_id.yaml
+  thread_id:
+    $ref: ./thread_id.yaml
+  file_id:
+    $ref: ./file_id.yaml
+  due_date:
+    $ref: ./due_date.yaml
+  entity_template_id:
+    $ref: ./entity_template_id.yaml
+  custom_attributes:
+    $ref: ./customAttributes.yaml
+required:
+  - goal_id
+  - issue

@@ -1,0 +1,9 @@
+type: string
+description: Category of employment
+enum:
+  - FTIME
+  - PTIME
+  - VOLUN
+  - CASUA
+  - CONTR
+maxLength: 10

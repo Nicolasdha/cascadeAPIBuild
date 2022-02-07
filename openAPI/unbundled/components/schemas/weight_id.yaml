@@ -1,0 +1,7 @@
+type: integer
+example: 2
+description: |
+  The weight of a resources's priority.
+  The highest priority is `1`. The lowest is `4`.
+minimum: 1
+maximum: 4

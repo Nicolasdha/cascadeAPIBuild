@@ -1,0 +1,4 @@
+description: An array of goals
+type: array
+items:
+  $ref: ./goalObject.yaml
